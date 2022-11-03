@@ -1,0 +1,619 @@
+<html>
+	<head>
+		<script src="js/Chart.min.js"></script>
+		<script type="text/javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+		</script>
+		<link rel="stylesheet" href="bootstrap-4.4.1-dist\css\bootstrap.min.css">
+		<link rel="stylesheet" href="./drag-test.css">
+		<script src="js/drag-test.js" defer></script>
+		<!-- <script src="/js/index.js"></script> -->
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		
+	</head>
+	
+	<body>
+		<div class="container mt-3 " >
+			<button class="btn btn-success" style onclick="location.href='index.html'">Quantum Circuit</button>
+			<button class="btn btn-success" style onclick="location.href='ES.html'">Entanglement Swapping</button>
+			
+			<div class="row mt-2 ">
+				<table class="table text-center " role="alert" >
+					<thead class="table-danger" >
+						<tr>
+							<th scope="col"> Input </th>
+							<th scope="col"> State </th>
+							<th scope="col"> Input </th>
+							<th scope="col"> State </th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<tr>
+							
+							<th scope="col" >$$\phi^+ \text{ (00)}$$</th>
+							<th scope="col" >`1/\sqrt{2}(|00〉＋|11〉)`</th>
+							<th scope="col">$$\phi^- \text{ (11)}$$</th>
+							<th scope="col">`1/\sqrt{2}(|00〉－|11〉)`</th>
+						</tr>
+						<tr>
+							<th scope="col">$$\psi^+ \text{ (01)}$$</th>
+							<th scope="col">`1/\sqrt{2}(|01〉＋|10〉)`</th>
+							<th scope="col">$$\psi^- \text{ (10)}$$</th>
+							<th scope="col">`1/\sqrt{2}(|01〉－|10〉)`</th>
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+			<div style="height:10px;">
+			
+			</div>
+			<div class="row mt-5">
+				<div class="input-group">
+				  <span class="input-group-text alert-primary">Input three Entanglement A , B and C</span>
+				  <input id = "input_A" type="text" aria-label="First name"   placeholder="A = 𝜙？">
+				  <input id = "input_B" type="text" aria-label="Last name"   placeholder="B = 𝜙？">
+				  <input id = "input_C" type="text" aria-label="Last name"   placeholder="C = 𝜙？">
+				  <input id = "input_D" type="text" aria-label="Last name" class="form-control"  placeholder="How to Entanglement Swapping？">
+				</div>
+			</div>
+			<div style="height:20px;">
+			
+			</div>
+			
+			
+			<div class="row mt-2" style="text-align:left; margin: auto;">
+				<div class="col-3 mr-5">
+					<button class="btn btn-primary" onclick="run()">Run</button>
+					<button class="btn btn-danger" onclick="reset()">Clear</button>
+				</div>
+				
+				<div class="col-3 mr-2" >
+	
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" >
+						<label class="form-check-label" for="flexRadioDefault2">
+							All Step
+						  </label>
+					</div>
+						
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" >
+						<label class="form-check-label" for="flexRadioDefault3">
+							Final Result
+						</label>
+					</div>
+						
+				</div>
+			</div>
+			
+			<div class="row alert alert-warning justify-content-center" "role="alert" style="margin-bottom: 0rem;margin-top:2em;">
+				Result
+			</div>
+			<center >
+				<div height="20%" style="margin:auto;">
+					<label id="Result" name="truthTable"  >
+						
+					</label>
+				</div>
+				
+			</center>
+		</div>
+		
+		
+			
+	</body>
+	
+	<script>
+		function reset(){   //clear
+		
+			document.getElementById("input_A").value="";
+			document.getElementById("input_B").value="";
+			document.getElementById("input_C").value="";
+			document.getElementById("input_D").value="";
+			document.getElementById("Result").innerText="";
+		}
+		
+		function run(){  //開始執行
+			
+			var a = document.getElementById("input_A").value;
+			var b = document.getElementById("input_B").value;
+			var c = document.getElementById("input_C").value;
+			var es = document.getElementById("input_D").value;
+			
+			var a1,b1,c1;
+			if (a == "00"){
+				a1 = 0;
+				a = "\\phi^+";
+			}
+			else if(a == "01"){
+				a1 = 2;
+				a = "\\psi^+";
+			}
+			else if(a == "10"){
+				a1 = 3;
+				a = "\\psi^-";
+			}
+			else if(a == "11"){
+				a1 = 1;
+				a = "\\phi^-";
+			}
+			
+			if (b == "00"){
+				b1 = 0;
+				b = "\\phi^+";
+			}
+			else if(b == "01"){
+				b1 = 2;
+				b = "\\psi^+";
+			}
+			else if(b == "10"){
+				b1 = 3;
+				b = "\\psi^-";
+			}
+			else if(b == "11"){
+				b1 = 1;
+				b = "\\phi^-";
+			}
+			
+			if (c == "00"){
+				c1 = 0;
+				c = "\\phi^+";
+			}
+			else if(c == "01"){
+				c1 = 2;
+				c = "\\psi^+";
+			}
+			else if(c == "10"){
+				c1 = 3;
+				c = "\\psi^-";
+			}
+			else if(c == "11"){
+				c1 = 1;
+				c = "\\phi^-";
+			}
+			
+			
+			var e_array = [];       //總狀態
+			var e_array_a = [];		//狀態
+			var e_array_e = [];		//正負
+			
+			e_array_e = set_entanglement();
+			e_array = e_array_e.e_array;
+			e_array_a = e_array_e.e_array_a;
+			e_array_e = e_array_e.e_array_e;
+			
+			var bb = document.getElementById("Result");  //網頁上顯示結果的 Label
+			
+			bb.innerText = '';
+			bb.innerText+='$$\\begin{aligned}';   //mathjax格式
+			bb.innerText += '&\\ \\ \\ \\ A \\otimes B \\otimes C\\\\';
+			bb.innerText += '&= \\ '+ a + '\\otimes'+ b+ '\\otimes'+ c+'\\\\';
+			
+			var mode = document.getElementById("flexRadioDefault1");
+			
+			a -= 1;
+			b -= 1;
+			if (mode.checked){
+				bb.innerText += '&=  \\frac{1}{\\sqrt{2}}('+e_array[a1][0] + e_array[a1][1]+")_{12} \\otimes \\frac{1}{\\sqrt{2}}("+e_array[b1][0] + e_array[b1][1]+')_{34} \\otimes \\frac{1}{\\sqrt{2}}('+e_array[c1][0] + e_array[c1][1]+')_{56} \\\\';
+			}
+			
+			//乘開
+			
+			var now_state = [];  //現在的狀態
+			var now_state_a = []; //現在狀態的正負
+			
+			for (var i=a1*2;i<a1*2+2;i++){
+				for (var j=b1*2;j<b1*2+2;j++){
+					for (var k=c1*2;k<c1*2+2;k++){
+						now_state.push(e_array_a[i]+e_array_a[j]+e_array_a[k]);
+						now_state_a.push(e_array_e[i]*e_array_e[j]*e_array_e[k]);
+					}	
+				}
+			}
+			
+			
+			if (mode.checked){
+				bb.innerText += '&=  \\frac{1}{2\\sqrt{2}}(';
+				for (var i=0; i<now_state.length;i++){
+					if(now_state_a[i] == -1){
+						bb.innerText += "－|"+now_state[i]+"〉";
+					}
+					else{
+						if (i==0){
+							bb.innerText += "|"+now_state[i]+"〉";
+						}
+						else{
+							bb.innerText += "＋|"+now_state[i]+"〉";
+						}
+					}
+				}
+				bb.innerText += ")_{123456} \\\\";
+			}
+			
+			
+			//糾纏交換
+			
+			for (var i=0; i<now_state.length;i++){
+				var d = '';
+				for (var j=0;j < es.length;j++){
+					d += now_state[i][es[j]-1];
+				}
+				now_state[i] = d;
+			}
+			
+			
+			if (mode.checked){
+				bb.innerText += '&=  \\frac{1}{2\\sqrt{2}}(';
+				for (var i=0; i<now_state.length;i++){
+					if(now_state_a[i] == -1){
+						bb.innerText += "－|"+now_state[i]+"〉";
+					}
+					else{
+						if (i==0){
+							bb.innerText += "|"+now_state[i]+"〉";
+						}
+						else{
+							bb.innerText += "＋|"+now_state[i]+"〉";
+						}
+					}
+				}
+				bb.innerText += ")_{" + es +"}\\\\";
+			}
+			
+			
+			//替換
+			
+			var  a_array=[];
+			var  a_array_a=[];
+			var  a_array_ae=[];
+			var  a_array_e=[];
+			var  aa = [];
+			var  aaa = [];
+			
+			for (var i=0; i<now_state.length;i++){
+				var d='';
+				var cc='';
+				var dd = 0;
+				for (var j=0;j<now_state[i].length;j++){
+					cc += now_state[i][j];
+					dd += 1;
+					
+					if (cc.length == 3){
+						if (cc == '000'){
+							a_array.push('𝜙_1');
+							a_array.push('𝜙_2');
+							a_array_e.push(1*now_state_a[i]);
+							a_array_e.push(1*now_state_a[i]);
+							
+							if (dd != 6){
+								d += "(𝜙_1＋𝜙_2)\\otimes";
+							}		
+							else{
+								d += "(𝜙_1＋𝜙_2)";
+							}
+						}
+						else if(cc == '001'){
+							a_array.push('𝜙_3');
+							a_array.push('𝜙_4');
+							a_array_e.push(1*now_state_a[i]);
+							a_array_e.push(1*now_state_a[i]);
+							
+							if (dd != 6){
+								d += "(𝜙_3＋𝜙_4)\\otimes";
+							}		
+							else{
+								d += "(𝜙_3＋𝜙_4)";
+							}
+						}
+						else if(cc == '010'){
+							a_array.push('𝜙_5');
+							a_array.push('𝜙_6');
+							a_array_e.push(1*now_state_a[i]);
+							a_array_e.push(1*now_state_a[i]);
+							
+							if (dd != 6){
+								d += "(𝜙_5＋𝜙_6)\\otimes";
+							}		
+							else{
+								d += "(𝜙_5＋𝜙_6)";
+							}
+						}
+						else if(cc == '011'){
+							a_array.push('𝜙_7');
+							a_array.push('𝜙_8');
+							a_array_e.push(1*now_state_a[i]);
+							a_array_e.push(1*now_state_a[i]);
+							
+							if (dd != 6){
+								d += "(𝜙_7＋𝜙_8)\\otimes";
+							}		
+							else{
+								d += "(𝜙_7＋𝜙_8)";
+							}
+						}
+						else if(cc == '100'){
+							a_array.push('𝜙_7');
+							a_array.push('𝜙_8');
+							a_array_e.push(1*now_state_a[i]);
+							a_array_e.push(-1*now_state_a[i]);
+							
+							if (dd != 6){
+								d += "(𝜙_7－𝜙_8)\\otimes";
+							}		
+							else{
+								d += "(𝜙_7－𝜙_8)";
+							}
+						}
+						else if(cc == '101'){
+							a_array.push('𝜙_5');
+							a_array.push('𝜙_6');
+							a_array_e.push(1*now_state_a[i]);
+							a_array_e.push(-1*now_state_a[i]);
+							
+							if (dd != 6){
+								d += "(𝜙_5－𝜙_6)\\otimes";
+							}		
+							else{
+								d += "(𝜙_5－𝜙_6)";
+							}
+						}
+						else if(cc == '110'){
+							a_array.push('𝜙_3');
+							a_array.push('𝜙_4');
+							a_array_e.push(1*now_state_a[i]);
+							a_array_e.push(-1*now_state_a[i]);
+							
+							if (dd != 6){
+								d += "(𝜙_3－𝜙_4)\\otimes";
+							}		
+							else{
+								d += "(𝜙_3－𝜙_4)";
+							}
+						}
+						else if(cc == '111'){
+							a_array.push('𝜙_1');
+							a_array.push('𝜙_2');
+							a_array_e.push(1*now_state_a[i]);
+							a_array_e.push(-1*now_state_a[i]);
+							
+							if (dd != 6){
+								d += "(𝜙_1－𝜙_2)\\otimes";
+							}		
+							else{
+								d += "(𝜙_1－𝜙_2)";
+							}
+						}
+						cc='';
+						aa.push(a_array);
+						aaa.push(a_array_e);
+						a_array= [];
+						a_array_e = [];
+					}
+				}
+				
+				a_array_a.push(aa);
+				a_array_ae.push(aaa);
+				aa=[];
+				aaa = [];
+				now_state[i] = d;
+			}
+
+			var ccc = 0;
+			if (mode.checked){
+				bb.innerText += '&=  \\frac{1}{4\\sqrt{2}} \\{';
+				for (var i=0; i<now_state.length;i++){
+					if(now_state_a[i] == -1){
+						bb.innerText += "－"+now_state[i];
+					}
+					else{
+						if (i==0){
+							bb.innerText += now_state[i];
+						}
+						else{
+							bb.innerText += "＋"+now_state[i];
+						}
+					}
+					ccc += 1;
+					if (i != now_state.length-1 && ccc == 2){
+						bb.innerText += '\\\\';
+						bb.innerText += '&\\quad \\quad \\quad ';
+						ccc = 0;
+					}
+					
+					
+				}
+				bb.innerText += "\\}_{" + es +"}\\\\" ;
+				
+			}
+			
+			
+			//乘開
+			
+			
+			
+			now_state = [];
+			now_state_a = [];
+			
+			for (var i=0;i<a_array_a.length;i++){
+				for (var j=0;j<2;j++){
+					for (var k=0;k<2;k++){
+						d = '';
+						var c = 0;
+						d += a_array_a[i][0][j]+a_array_a[i][1][k];
+						c = a_array_ae[i][0][j]*a_array_ae[i][1][k];
+							
+						now_state.push(d);
+						now_state_a.push(c);
+						d='';
+						
+					}
+				}
+			}
+
+			
+			
+			var aaa = 0;
+			
+			if (mode.checked){
+				bb.innerText += '&=  \\frac{1}{4\\sqrt{2}} \\{';
+				for (var i=0; i<now_state.length;i++){
+					aaa += 1;
+					if(now_state_a[i] == -1){
+						bb.innerText += "－|"+now_state[i]+"〉";
+					}
+					else{
+						if (i==0){
+							bb.innerText += "|"+now_state[i]+"〉";
+						}
+						else{
+							bb.innerText += "＋|"+now_state[i]+"〉";
+						}
+					}
+					
+					if (aaa == 4  && i != now_state.length-1){
+						bb.innerText += '\\\\';
+						bb.innerText += '&\\quad \\quad \\quad ';
+						aaa = 0;
+					}
+				}
+				
+				bb.innerText += "\\}_{" + es +"}\\\\" ;
+			}
+			
+	
+			//重複項化簡
+			
+			var answer = [];
+			var answer_a = [];
+			
+			for (var i=0;i<now_state.length;i++){
+				for (var j=0; j<now_state.length;j++){
+
+					if (i!=j){
+						
+						if (now_state[i] == now_state[j] && now_state_a[i] * now_state_a[j] == 1 && now_state[i] != ''){
+							
+							answer.push(now_state[i]);
+							answer_a.push(now_state_a[i]);
+							now_state[j] = '';
+							now_state_a[j] = 0;
+						}
+					}
+				}
+			}
+			
+			bb.innerText += '&=  \\frac{1}{2\\sqrt{2}} \\{';
+			
+			var aaa = 0;
+			
+			for (var i=0; i<answer.length;i++){
+				aaa += 1;
+				if(answer_a[i] == -1){
+					bb.innerText += "－|"+answer[i]+"〉";
+				}
+				else{
+					if (i==0){
+						bb.innerText += "|"+answer[i]+"〉";
+					}
+					else{
+						bb.innerText += "＋|"+answer[i]+"〉";
+					}
+				}
+					
+				if (aaa == 4  && i != answer.length-1){
+					bb.innerText += '\\\\';
+					bb.innerText += '&\\quad \\quad \\quad ';
+					aaa = 0;
+				}
+			}
+
+			
+			
+			bb.innerText += "\\}_{" + es +"}\\\\" ;
+
+			bb.innerText += ' \\end{aligned}$$';
+			
+			MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+		}
+		
+		function ToBin (number, num2) { //轉二進制程式
+			
+			let num = number;
+			let binary = (num % 2).toString();
+			for (; num > 1; ) {
+				num = parseInt(num / 2);
+				binary =  (num % 2) + (binary);
+			}
+			
+			while(binary.length!=num2){
+				
+				binary = '0'+binary;
+			}
+
+			return binary;
+
+		}
+		
+		
+		function to_XOR(num){  //做XOR
+			var a = "";
+			for (var i = 0 ; i< num.length;i++){
+				
+				if (num[i] == "1"){
+					a += '0';
+				}
+				else{
+					a += '1';
+				}
+			}
+	
+			return a;
+		}
+		
+		function set_entanglement(){
+			var e_array_e= [];
+			var e_array_a = [];
+			var e_array = [];
+			
+			for (var i=0 ;i<2 ;i++){
+				var b = ToBin(i,2);
+				
+				var c = [];
+				
+				
+				c.push('|'+b+'〉');
+				c.push('＋|'+to_XOR(b)+'〉');
+				
+				e_array_e.push(1);
+				e_array_e.push(1);
+				
+				e_array_a.push(b);
+				e_array_a.push(to_XOR(b));
+				
+				e_array.push(c);
+				
+				c = [];
+				
+				c.push('|'+b+'〉');
+				c.push('－|'+to_XOR(b)+'〉');
+				
+				e_array_e.push(1);
+				e_array_e.push(-1);
+				
+				e_array_a.push(b);
+				e_array_a.push(to_XOR(b));
+				
+				e_array.push(c);
+				
+				
+			}
+			
+			return {e_array, e_array_a, e_array_e};
+		}
+	
+
+	</script>
+	
+</html>

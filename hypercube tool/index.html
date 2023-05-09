@@ -1,0 +1,1051 @@
+<html>
+	<head>
+		<script src="js/Chart.min.js"></script>
+		<script src="js/fix-webm-duration.js"></script>
+		<script type="text/javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+		</script>
+		<link rel="stylesheet" href="bootstrap-5.3.0-alpha3-dist\css\bootstrap.min.css">
+		<link rel="stylesheet" href="./drag-test.css">
+		<script src="js/drag-test.js" defer></script>
+		<!-- <script src="/js/index.js"></script> -->
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+		<script src="https://html2canvas.hertzen.com/dist/html2canvas.js"> </script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+		<script src="bootstrap-5.3.0-alpha3-dist/js/bootstrap.min.js"></script>
+		<script src="js/RecordRTC.min.js"></script>
+		<script type="importmap">
+		  {
+			"imports": {
+			  "three": "https://unpkg.com/three@0.151.3/build/three.module.js",
+			  "three/addons/": "https://unpkg.com/three@0.151.3/examples/jsm/"
+			}
+		  }
+		</script>
+			
+	</head>
+	
+	<body>
+		<div class="container mt-3" >
+			<center>
+			
+				<button type="button" class="btn btn-outline-secondary" onclick="location.href='../circuit checker/index.html'"><img  src="image\atom.png"></button>
+				<button id = "photo" type="button" class="btn btn-outline-secondary"><img  src="image\camera.png"></button>
+				<button id = "file" type="button" class="btn btn-outline-secondary"><img src="image\folder.png"></button>
+				<button id = "video" type="button" class="btn btn-outline-secondary"><img src="image\REC.png"></button>
+				<button id = "rec" hidden="true" type="button" class="btn btn-secondary"><img src="image\rec-button.png"></button>
+			
+			
+			<div id="all_page" style=" background-color:white; position: relative;">
+				<div style="height:10px;">
+				
+				</div>
+				<input  id = "file_name" type="text" type="text" class="form-range" class="form-range" disabled style=" text-align:left;  font-family:serif; width:74.3%;font-size:25px; height:40px;">
+				<div style="height:10px;">
+				
+				</div>
+				
+				<div id="scene-container">
+					<!--<canvas id="mainCanvas" style="border:1px solid #000000;">
+						
+					</canvas>-->
+					
+					<li id="position_value_x" hidden="true" class="list-group-item list-group-item-action list-group-item-danger" style="position:absolute; right:168px;top:603px; width:120px; text-align:left; font-family:serif; font-size:21px;"></li>
+					<li id="position_value_y" hidden="true" class="list-group-item list-group-item-action list-group-item-success" style="position:absolute;right:168px; top:635px; width:120px; text-align:left; font-family:serif; font-size:21px;" ></li>
+					<li id="position_value_z" hidden="true" class="list-group-item list-group-item-action list-group-item-primary" style="position:absolute; right:168px;top:667px; width:120px; text-align:left; font-family:serif; font-size:21px;"></li>
+				</div >
+
+				<div style="height:20px;">
+					<input id = "s_value" type="range" class="form-range" min="0" max="5" step="0.5" style=" width:74.3%" >
+				</div>
+				<div style="height:10px;">
+				
+				</div>
+				<input  id = "generation" type="text" class="form-range" disabled style=" text-align:center;  font-family:serif; width:74.3%;font-size:25px; height:40px;">
+				<div style="height:10px;">
+				</div >
+				
+			</div>
+			
+			<button id = "stop_b" type="button" class="btn btn-outline-secondary"><img src="image\stop.png"></button>
+			<button id = "play_b" type="button" class="btn btn-outline-secondary"><img src="image\play.png"></button>
+			<button id = "play_p" hidden="true" type="button" class="btn btn-outline-secondary"><img src="image\pause.png"></button>
+			<button id = "dea" type="button" class="btn btn-outline-secondary"><img src="image\rewind.png"></button>
+			<button id = "acc" type="button" class="btn btn-outline-secondary"><img src="image\speed.png"></button>
+			<button id = "show_speed" type="button" class="btn btn-outline-secondary" style="width:65px; height:38px"></button>
+			<button id = "foot" type="button" class="btn btn-outline-secondary"><img src="image\foot-print.png"></button>
+			<button id = "reset_b" type="button" class="btn btn-outline-secondary" onclick="reset()"><img src="image\undo.png"></button>
+			<button id = "show_axis" class="btn btn-outline-secondary" type="button" ><img src="image\axis.png"></button>
+			<button id = "show_grid" class="btn btn-outline-secondary" type="button" ><img src="image\grid.png"></button>
+			<button id = "show_point" class="btn btn-outline-secondary" type="button" ><img src="image\info.png"></button>
+			<button id = "jump" type="button" class="btn btn-outline-secondary"><img src="image\jump.png"></button>
+			<input id = "jump_value" hidden="true" type="text" class="form-range" style = " width:49px; height:35px">
+			</center>
+		</div>
+	</body>
+
+	
+	<script type="module">
+		//let canvas = document.getElementById("mainCanvas");
+		//接著指定繪圖方式
+		//let ctx = canvas.getContext("2d");
+		//讓canvas的高度和寬度等於整個畫面，讓整個視窗都是你的畫布
+		//canvas.height = window.innerHeight*0.7;
+		//canvas.width = window.innerWidth*0.5;
+		
+		import * as THREE from 'three';
+		
+		//import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+		import { TrackballControls } from 'three/addons/controls/TrackballControls';
+		import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+		import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+		
+		const container = document.querySelector('#scene-container');
+		const scene = new THREE.Scene();
+		const camera = new THREE.PerspectiveCamera( 85, (window.innerWidth*0.5) / (window.innerHeight*0.7), 0.1, 1000 );
+		
+		const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+		scene.background = new THREE.Color(0xeeeeee);
+		renderer.setSize( window.innerWidth*0.5, window.innerHeight*0.7 );
+		document.body.appendChild( renderer.domElement );
+		
+		
+		/*const linesegment = new THREE.LineSegments(geometry,new THREE.LineBasicMaterial({color: 0x000000,
+													linewidth: 1,
+													} ));*/
+													
+		
+		var slider = document.getElementById("s_value");
+		var savedData = sessionStorage.getItem('data');
+		var data_points = [[0,0,0],[0,0,0]];
+		const file_name = document.getElementById("file_name");
+		const generation = document.getElementById("generation");
+		var dim = 3;
+		if (savedData){
+			
+			data_points = JSON.parse(savedData)['point'];
+			file_name.value = " File：" + JSON.parse(savedData)['file_name'];
+			slider.disabled = JSON.parse(savedData)['boolen'];
+			dim = JSON.parse(savedData)['dix'];
+		}
+		else{
+			file_name.value = " File：";
+			generation.value = 1 +"/" + 1 + "(generation)";
+			slider.disabled = true;
+		}
+
+		/*var data_points = [[0,0,0],[0.1,0.1,0.1],[0.3,0.3,-0.3],[-1.0,-1.0,-1.0],[-1.2,-1.2,-1.2],[-1.5,-1.5,-1.5],[-1.8,1.5,-1.0]
+		                   ,[1.5,-1.8,-1.5],[-1.5,-1.5,-1.5],[1.5,-1.5,1.5],[0,0,0],[0.1,0.1,0.1],[0.3,0.3,-0.3],[-1.0,-1.0,-1.0],[-1.2,-1.2,-1.2],[-1.5,-1.5,-1.5],[-1.8,1.5,-1.0]
+		                   ,[1.5,-1.8,-1.5],[-1.5,-1.5,-1.5],[1.5,-1.5,1.5]];*/
+		
+		
+		const pointgeometry = new THREE.SphereGeometry( 0.1 );
+		const material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+		const sphere = new THREE.Mesh( pointgeometry, material );
+		
+		if (dim == 3){
+		
+			
+			
+			var data_ = [];
+		
+			for (var i=0;i<data_points.length;i++){
+				var data = new THREE.Vector3(data_points[i][0],data_points[i][1],data_points[i][2]);
+				data_.push(data);
+			}
+			var curve = new THREE.CatmullRomCurve3(data_);
+			const loader = new FontLoader();
+			const geometry = new THREE.BoxHelper(new THREE.Mesh(new THREE.BoxGeometry(4,4,4)),0x000000);
+			scene.add(geometry);
+			loader.load( 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+
+				const text_000 = new TextGeometry( '000', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_000 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_000 = new THREE.Mesh( text_000, textMaterial_000 );
+				mesh_000.position.set( -2.2, -2.3, -2.2 );
+
+				scene.add( mesh_000 );
+				
+				const text_001 = new TextGeometry( '001', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_001 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_001 = new THREE.Mesh( text_001, textMaterial_001 );
+				mesh_001.position.set( -2.1, -2.3, 2.1 );
+
+				scene.add( mesh_001 );
+				
+				const text_010 = new TextGeometry( '010', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_010 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_010 = new THREE.Mesh( text_010, textMaterial_010 );
+				mesh_010.position.set( -2.1, 2.1, -2.1 );
+
+				scene.add( mesh_010 );
+				
+				const text_011 = new TextGeometry( '011', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_011 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_011 = new THREE.Mesh( text_011, textMaterial_011 );
+				mesh_011.position.set( -2.1, 2.1, 2.1 );
+
+				scene.add( mesh_011 );
+				
+				const text_1 = new TextGeometry( '100', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_100 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_100 = new THREE.Mesh( text_1, textMaterial_100 );
+				mesh_100.position.set( 1.6, -2.3, -2.1 );
+
+				scene.add( mesh_100 );
+				
+				const text_101 = new TextGeometry( '101', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_101 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_101 = new THREE.Mesh( text_101, textMaterial_101 );
+				mesh_101.position.set( 1.6, -2.3, 2.1 );
+
+				scene.add( mesh_101 );
+				
+				const text_110 = new TextGeometry( '110', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_110 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_110 = new THREE.Mesh( text_110, textMaterial_110 );
+				mesh_110.position.set( 1.6, 2.1, -2.1 );
+
+				scene.add( mesh_110 );
+				
+				const text_111 = new TextGeometry( '111', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_111 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_111 = new THREE.Mesh( text_111, textMaterial_111 );
+				mesh_111.position.set( 1.6, 2.1, 2.1 );
+
+				scene.add( mesh_111 );
+			} );
+			
+			var points = curve.getPoints(data_points.length-1);
+			
+			
+			let arr = [];
+			for (let i = 0; i < data_points.length; i++) {
+			  arr.push(i);
+			  
+			}
+			// 生成一个时间序列
+			var times = new Float32Array(arr);
+
+			var posArr = [];
+			points.forEach(elem => {
+			  posArr.push(elem.x, elem.y, elem.z);
+			});
+			
+			//console.log(posArr);
+			
+		}
+		else{	
+		
+			
+			
+			var data_ = [];
+			
+			for (var i=0;i<data_points.length;i++){
+				var data = new THREE.Vector3(data_points[i][0],data_points[i][1],0);
+				data_.push(data);
+			}
+			var curve = new THREE.CatmullRomCurve3(data_ );
+			
+			/*const material = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true });
+			const mesh = new THREE.Mesh(new THREE.PlaneGeometry(4, 4), material);
+			const plane = new THREE.Plane( new THREE.Vector2( 4,4 ), 3 );
+			const helper = new THREE.PlaneHelper( plane, 1, 0xffff00 );
+			scene.add( helper );*/
+			
+			const geometry = new THREE.PlaneGeometry(4,4);
+			const material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+			const plane = new THREE.Mesh( geometry, material );
+			scene.add( plane );
+			const loader = new FontLoader();
+			loader.load( 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+
+				const text_00 = new TextGeometry( '00', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_00 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_00 = new THREE.Mesh( text_00, textMaterial_00 );
+				mesh_00.position.set( -2.1, -2.3 );
+
+				scene.add( mesh_00 );
+				
+				const text_01 = new TextGeometry( '01', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_01 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_01 = new THREE.Mesh( text_01, textMaterial_01 );
+				mesh_01.position.set( -2.1, 2.1 );
+
+				scene.add( mesh_01 );
+				
+				const text_10 = new TextGeometry( '10', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_10 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_10 = new THREE.Mesh( text_10, textMaterial_10 );
+				mesh_10.position.set(  1.8, -2.3 );
+
+				scene.add( mesh_10 );
+				
+
+				
+				const text_11 = new TextGeometry( '11', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_11 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_11 = new THREE.Mesh( text_11, textMaterial_11 );
+				mesh_11.position.set( 1.8, 2.1 );
+
+				scene.add( mesh_11 );
+				
+				
+			} );
+			
+			var points = curve.getPoints(data_points.length-1);
+			
+			let arr = [];
+			for (let i = 0; i < data_points.length; i++) {
+			  arr.push(i);
+			  
+			}
+			// 生成一个时间序列
+			var times = new Float32Array(arr);
+
+			var posArr = [];
+			points.forEach(elem => {
+			  posArr.push(elem.x, elem.y,elem.z);
+			});
+		}
+		
+		var values = new Float32Array(posArr);
+		
+		//console.log(values);
+		// 创建一个帧动画的关键帧数据，曲线上的位置序列对应一个时间序列
+		var posTrack = new THREE.KeyframeTrack('.position', times, values);
+		
+		
+		let duration = data_points.length;
+		
+		let clip = new THREE.AnimationClip("default", duration, [posTrack]);
+		var mixer = new THREE.AnimationMixer(sphere);
+		let AnimationAction = mixer.clipAction(clip);
+		AnimationAction.timeScale = 1;
+		AnimationAction.play();
+		AnimationAction.loop = THREE.LoopOnce;
+		
+		// 创建一个和时间序列相对应的位置坐标系列
+		/*var values = new Float32Array(posArr);
+		
+		
+		// 创建一个帧动画的关键帧数据，曲线上的位置序列对应一个时间序列
+		var posTrack = new THREE.KeyframeTrack('.position', times, values);
+		let duration = data_points.length+1;
+		console.log(posTrack);
+		let clip = new THREE.AnimationClip("default", duration, [posTrack]);
+		var mixer = new THREE.AnimationMixer(sphere);
+
+		let AnimationAction = mixer.clipAction(clip);
+		AnimationAction.timeScale = 1;
+		AnimationAction.play();
+		AnimationAction.loop = THREE.LoopOnce;*/
+		
+													
+		//linesegment.computeLineDistances();
+		
+		/*const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+		const material = new THREE.MeshToonMaterial({color:0x00e3e3});
+		const cube = new THREE.Mesh( geometry, material );*/
+		
+		const light = new THREE.AmbientLight(0xffffff, 1);
+		
+		//scene.add( cube );
+		scene.add( light );
+		
+		camera.position.z = 5;
+		const trackballControls = new TrackballControls(camera, renderer.domElement);
+		 trackballControls.rotateSpeed = 2.0;
+		 trackballControls.zoomSpeed = 1.0;
+		 trackballControls.panSpeed = 0.3;
+
+		/*const controls = new OrbitControls( camera, renderer.domElement );
+		//camera.position.set( 0, 20, 100 );
+		controls.update();*/
+		
+		var a=0;
+		var b=0;
+		
+		slider.min = 0;
+		slider.max = data_points.length-1;
+		slider.step = 1;
+		var show_speed = document.getElementById("show_speed");
+		show_speed.innerText = AnimationAction.timeScale;
+		
+		const axesHelper = new THREE.AxesHelper( 2 );
+		
+		scene.add( sphere );
+		
+		//slider.max = 
+		/*function animate() {
+			
+			trackballControls.update();
+			
+			if (a != 0){
+				sphere.position.x=points[b][0];
+				sphere.position.y=points[b][1];
+				sphere.position.z=points[b][2];
+				if (b < 9){
+					b++;
+				}
+				
+			}
+			
+			
+			
+			renderer.render( scene, camera );
+			
+			requestAnimationFrame( animate );
+			
+		}*/
+		
+		
+		const go = new THREE.BufferGeometry().setFromPoints(points);
+		const me = new THREE.LineBasicMaterial({color:0x01B468});
+		const mes = new THREE.Line(go,me);
+		
+		var gridXY = new THREE.GridHelper(4, 10,0x0000ff);
+		var gridYZ = new THREE.GridHelper(4, 10,0x0000ff);
+		var gridXZ = new THREE.GridHelper(4, 10,0x0000ff);
+		
+		var gridXY2 = new THREE.GridHelper(4, 10,0x0000ff);
+		var gridYZ2 = new THREE.GridHelper(4, 10,0x0000ff);
+		var gridXZ2 = new THREE.GridHelper(4, 10,0x0000ff);
+		
+		if(dim == 2){
+			gridXY.position.z = 0, 0
+			gridXY.position.y = 0
+			gridXY.rotation.x = Math.PI / 2;
+		}
+		else if(dim == 3){
+			gridXY.position.z = -2;
+			gridXY.position.y = 0;
+			gridXY.rotation.x = Math.PI / 2;
+			
+			gridYZ.position.x = -2;
+			gridYZ.position.y = 0;
+			gridYZ.rotation.z = Math.PI / 2;
+			
+			gridXZ.position.y = -2;
+			
+			gridXY2.position.z = 2;
+			gridXY2.position.y = 0;
+			gridXY2.rotation.x = Math.PI / 2;
+			
+			gridYZ2.position.x = 2;
+			gridYZ2.position.y = 0;
+			gridYZ2.rotation.z = Math.PI / 2;
+			
+			gridXZ2.position.y = 2;
+		}
+		
+		
+		
+		var clock = new THREE.Clock();//声明一个时钟对象
+		function render() {
+			trackballControls.update();
+			renderer.render(scene, camera);
+			requestAnimationFrame(render);
+			mixer.update(clock.getDelta());
+			
+			if (a==1){
+				AnimationAction.paused = false;
+			}
+			else{
+				AnimationAction.paused = true;
+			}
+			//console.log(AnimationAction.time);
+			//slider.vlaue = AnimationAction.time;
+			//console.log(AnimationAction.time);
+			if (parseFloat(AnimationAction.time) > parseInt(slider.max)){
+				AnimationAction.paused = true;
+				document.getElementById("play_p").hidden=true;
+				document.getElementById("play_b").hidden=false;
+				AnimationAction.time = slider.max;
+				a=0;
+			}
+			else{
+				slider.value = AnimationAction.time;
+			}
+			if (savedData){
+
+				generation.value = parseInt(AnimationAction.time)+1 + "/" + (data_points.length) + "(generation)";
+				
+				if(dim==2 &&  show_grid_conter==1){
+					scene.add(gridXY);
+				}
+				else if(dim==3 && show_grid_conter==1){
+					scene.add(gridXY);
+					scene.add(gridYZ);
+					scene.add(gridXZ);
+					
+				}
+				else{
+					scene.remove(gridXY);
+					scene.remove(gridYZ);
+					scene.remove(gridXZ);
+					
+				}
+				
+				if(dim==2 &&  show_axis_conter==1){
+					axesHelper.scale.z = 1e-23;
+					scene.add(axesHelper);
+				}
+				else if(dim==3 && show_axis_conter==1){
+					scene.add(axesHelper);
+				}
+				else{
+					scene.remove(axesHelper);
+				}
+				
+				if (dim == 2 && show_conter==1){
+					document.getElementById("position_value_x").hidden = false;
+					document.getElementById("position_value_y").hidden = false;
+					
+					document.getElementById("position_value_x").innerText = "X:"+(data_points[parseInt(AnimationAction.time)][0]/4.0+0.5);
+					document.getElementById("position_value_y").innerText = "Y:"+(data_points[parseInt(AnimationAction.time)][1]/4.0+0.5);
+				}
+				else if(dim == 3 &&show_conter==1){
+					document.getElementById("position_value_x").hidden = false;
+					document.getElementById("position_value_y").hidden = false;
+					document.getElementById("position_value_z").hidden = false;
+		
+					document.getElementById("position_value_x").innerText = "X:"+(data_points[parseInt(AnimationAction.time)][0]/4.0+0.5);
+					document.getElementById("position_value_y").innerText = "Y:"+(data_points[parseInt(AnimationAction.time)][1]/4.0+0.5);
+					document.getElementById("position_value_z").innerText = "Z:"+(data_points[parseInt(AnimationAction.time)][2]/4.0+0.5);
+				}
+				else{
+					document.getElementById("position_value_x").hidden = true;
+					document.getElementById("position_value_y").hidden = true;
+					document.getElementById("position_value_z").hidden = true;
+				}
+				
+			}
+			//console.log(data_points[98][0]);
+			//slider.disabled = false;
+		}
+		
+		render();
+		
+		
+		function stop_(){
+		
+			a = 0;
+			AnimationAction.reset ();
+			document.getElementById("play_p").hidden=true;
+			document.getElementById("play_b").hidden=false;
+		}
+		function reset(){
+			location.reload();
+			
+		}
+		function run(){
+			
+			if (a == 0){
+				a = 1;
+				document.getElementById("play_b").hidden=true;
+				document.getElementById("play_p").hidden=false;
+			}
+			else{
+				a = 0;
+				document.getElementById("play_p").hidden=true;
+				document.getElementById("play_b").hidden=false;
+			}
+		}
+		
+		function go_to(){
+			
+			AnimationAction.reset ();
+			AnimationAction.time = parseInt(slider.value);
+			AnimationAction.play();
+			
+		}
+		function dea(){
+			if (AnimationAction.timeScale == 1){
+				AnimationAction.timeScale = 1;
+			}
+			else{
+				AnimationAction.timeScale /= 2;
+			}
+			show_speed.innerText = AnimationAction.timeScale;
+		}
+		function acc(){
+			if (AnimationAction.timeScale == 1024){
+				AnimationAction.timeScale = 1024;
+			}
+			else{
+				AnimationAction.timeScale *= 2;
+			}
+			show_speed.innerText = AnimationAction.timeScale;
+		}
+		
+		var show_junp_value = 0;
+		function jump(){
+			if (show_junp_value == 0){
+				show_junp_value = 1;
+				document.getElementById("jump_value").hidden = false;
+				
+			}
+			else{
+				show_junp_value = 0;
+				document.getElementById("jump_value").hidden = true;
+
+			}
+		}
+		
+		
+		
+		function foot(){
+			if (b==0){
+			
+				scene.add( mes );
+				b = 1;
+			}
+			else{
+				scene.remove( mes );
+				b =0;
+			}
+		
+		}
+		var bfile;
+		function load_file(){
+			let input = document.createElement('input');
+			input.type = 'file';
+			input.accept = "epin";
+			input.onchange = _ => {
+				// you can use this method to get file and perform respective operations
+				let files =   Array.from(input.files);
+				if (files[0].type == "text/plain"){
+					file_name.value = " File：" + files[0]["name"];
+				
+					var f = files[0];
+					var reader = new FileReader();
+						
+						
+					reader.onload = function(e) {  
+						bfile = e.target.result 
+						var data1 = bfile.split('\r\n');
+						var data_point = [];
+						var data_dim = 3;
+						for (var i=0;i<data1.length;i++){
+							var d_point = data1[i].split(' ');
+							data_dim = d_point.length;
+							var d_point1 = [];
+							for (var j=0;j<d_point.length;j++){
+								d_point1.push((parseFloat(d_point[j])-0.5)*4.0);
+							}
+								
+							data_point.push(d_point1);
+						}
+							//console.log(bfile);
+						sessionStorage.clear();
+						var data2 = {'dix':3,'point':[[0,0,0],[0.1,0.1,0.1],[0.3,0.3,-0.3],[-1.0,-1.0,-1.0],[-1.2,-1.2,-1.2],[-1.5,-1.5,-1.5],[-1.8,1.5,-1.0]
+								  ,[1.5,-1.8,-1.5],[-1.5,-1.5,-1.5],[1.5,-1.5,1.5],[0,0,0],[0.1,0.1,0.1],[0.3,0.3,-0.3],[-1.0,-1.0,-1.0],[-1.2,-1.2,-1.2],[-1.5,-1.5,-1.5],[-1.8,1.5,-1.0]
+								  ,[1.5,-1.8,-1.5],[-1.5,-1.5,-1.5],[1.5,-1.5,1.5]],'file_name':files[0]["name"],"boolen":false};
+							
+						var data3 = {'dix':data_dim,'point':data_point,'file_name':files[0]["name"],"boolen":false};
+								   
+							//console.log(files[0]["name"]);
+						sessionStorage.setItem('data', JSON.stringify(data3));
+						location.reload();
+					}
+
+					reader.readAsText(f);
+				}
+				else{
+					window.alert("檔案類型錯誤，本系統只接受文字檔");
+				}
+				/*file_name.value = " File：" + files[0]["name"];
+				
+				
+				var f = files[0];
+				var reader = new FileReader();
+				
+				
+				reader.onload = function(e) {  
+					bfile = e.target.result 
+					var data1 = bfile.split('\r\n');
+					var data_point = [];
+					var data_dim = 3;
+					for (var i=0;i<data1.length;i++){
+						var d_point = data1[i].split(' ');
+						data_dim = d_point.length;
+						var d_point1 = [];
+						for (var j=0;j<d_point.length;j++){
+							d_point1.push((parseFloat(d_point[j])-0.5)*4.0);
+						}
+						
+						data_point.push(d_point1);
+					}
+					//console.log(bfile);
+					sessionStorage.clear();
+					var data2 = {'dix':3,'point':[[0,0,0],[0.1,0.1,0.1],[0.3,0.3,-0.3],[-1.0,-1.0,-1.0],[-1.2,-1.2,-1.2],[-1.5,-1.5,-1.5],[-1.8,1.5,-1.0]
+		                   ,[1.5,-1.8,-1.5],[-1.5,-1.5,-1.5],[1.5,-1.5,1.5],[0,0,0],[0.1,0.1,0.1],[0.3,0.3,-0.3],[-1.0,-1.0,-1.0],[-1.2,-1.2,-1.2],[-1.5,-1.5,-1.5],[-1.8,1.5,-1.0]
+		                   ,[1.5,-1.8,-1.5],[-1.5,-1.5,-1.5],[1.5,-1.5,1.5]],'file_name':files[0]["name"],"boolen":false};
+					
+					var data3 = {'dix':data_dim,'point':data_point,'file_name':files[0]["name"],"boolen":false};
+						   
+					//console.log(files[0]["name"]);
+					sessionStorage.setItem('data', JSON.stringify(data3));
+					location.reload();
+				}
+
+				reader.readAsText(f);*/
+				
+			};
+			input.click();
+		}
+		function photo(){
+		
+			/*const el = document.getElementById('all_page');
+			const config = {
+			  quality: 1,
+			  style: { "filter": "grayscale(100%)" }
+			};
+			domtoimage.toJpeg(el, { quality: 0.95 })
+				.then(function (dataUrl) {
+				var link = document.createElement('a');
+				link.download = 'my-image-name.jpeg';
+				link.href = dataUrl;
+				link.click();
+			});*/
+
+
+			/*html2canvas(document.getElementById('all_page'), {
+				//设置可以素材可以跨域，移动端不兼容
+				//allowTaint:true,
+				//useCORS: true,
+				//foreignObjectRendering: true
+			}).then(function(canvas) {
+				//document.body.appendChild(canvas);
+				
+				var a = document.createElement('a');
+				a.href = canvas.toDataURL("image/jpeg");
+				a.download = 'image.jpg';
+
+				a.click();
+			});*/
+			
+			const el = document.getElementById('all_page');
+			
+			domtoimage.toPng(el,).then(function(dataUrl){
+			
+				const link = document.createElement('a');
+				const filename = 'image.png';
+				link.download = filename;
+				link.href = dataUrl;
+				link.click();
+			});
+			
+			
+			
+			// 下載圖片
+		}
+		var video_page = document.getElementById('all_page');
+		
+		var record_rtc = new RecordRTC(renderer.domElement, {
+			type: 'canvas',
+			mimeType: 'video/webm;codecs=vp9',
+			recorderType: CanvasRecorder,
+			getNativeBlob: true
+		});
+		
+		var video_conter = 0;
+		var startTime;
+		
+		function video(){
+			if (video_conter == 0){  //錄影
+				document.getElementById("video").hidden = true;
+				document.getElementById("rec").hidden = false;
+				video_conter = 1;
+				startTime = Date.now();
+				record_rtc.startRecording();
+			}
+			else{		//停止錄影
+				document.getElementById("video").hidden = false;
+				document.getElementById("rec").hidden = true;
+				
+				record_rtc.stopRecording(function (stream) {
+				var duration = Date.now() - startTime;
+				
+				var blob = record_rtc.getBlob();
+				ysFixWebmDuration(blob, duration, function(fixedBlob) {
+					let downloadLink = document.createElement('a');
+					downloadLink.href = URL.createObjectURL(fixedBlob);
+					downloadLink.download = "video.mp4";
+					downloadLink.click();
+					/*record_rtc.screen.stop();
+					record_rtc.destroy();*/
+				});
+				// document.getElementById('preview-video').srcObject = null;
+				
+
+
+				// window.open(URL.createObjectURL(blob));
+			});
+				/*record_rtc.stopRecording(function (stream) {
+				
+				var duration = Date.now() - startTime;
+				//console.log(duration);
+				var blob = record_rtc.getBlob();
+				ysFixWebmDuration(blob, duration, function(fixedBlob) {
+					let downloadLink = document.createElement('a');
+					downloadLink.href = URL.createObjectURL(fixedBlob);
+					downloadLink.download = "video.mp4";
+					downloadLink.click();
+					//record_rtc.screen.stop();
+					//record_rtc.destroy();
+				});
+				// document.getElementById('preview-video').srcObject = null;
+				
+
+
+				// window.open(URL.createObjectURL(blob));
+				});*/
+			}
+			
+		}
+		
+		var show_conter = 0;
+		function show_point(){
+			if(show_conter == 0){
+				show_conter = 1;
+				
+			}
+			else{
+				show_conter = 0;
+				
+			}
+			
+		}
+		var show_axis_conter = 0;
+		function show_axis(){
+			if(show_axis_conter == 0){
+				show_axis_conter = 1;
+				//scene.add(axesHelper);
+			}
+			else{
+				show_axis_conter = 0;
+				//scene.remove(axesHelper);
+			}
+			
+		}
+		var show_grid_conter = 0;
+		function show_grid(){
+			if(show_grid_conter == 0){
+				show_grid_conter = 1;
+				//scene.add(axesHelper);
+			}
+			else{
+				show_grid_conter = 0;
+				//scene.remove(axesHelper);
+			}
+			
+		}
+		
+		document.getElementById("reset_b").onclick = reset;
+		document.getElementById("play_b").onclick = run;
+		document.getElementById("play_p").onclick = run;
+		document.getElementById("dea").onclick = dea;
+		document.getElementById("acc").onclick = acc;
+		document.getElementById("jump").onclick = jump;
+		document.getElementById("foot").onclick = foot;
+		document.getElementById("file").onclick = load_file;
+		document.getElementById("photo").onclick = photo;
+		document.getElementById("video").onclick = video;
+		document.getElementById("rec").onclick = video;
+		document.getElementById("show_axis").onclick = show_axis;
+		document.getElementById("show_grid").onclick = show_grid;
+		document.getElementById("show_point").onclick = show_point;
+		document.getElementById("stop_b").onclick = stop_;
+		document.getElementById("jump_value").onkeydown = function(e){
+			if (e.keyCode == 13){
+				
+				AnimationAction.reset ();
+				if (parseInt(document.getElementById("jump_value").value) >parseInt(slider.max)){
+					AnimationAction.time = parseInt(slider.max);
+				}
+				else if(parseInt(document.getElementById("jump_value").value) < 1){
+					AnimationAction.time = parseInt(0);
+				}
+				else{
+					AnimationAction.time = parseInt(document.getElementById("jump_value").value-1);
+				}
+				
+				slider.value = AnimationAction.time;
+				AnimationAction.play();
+			}
+		};
+		
+		document.getElementById("all_page").ondragover = function(e){
+			document.getElementById("all_page").style.border = "2px red solid";
+			e.stopPropagation();
+            e.preventDefault();
+		};
+		
+		document.getElementById("all_page").ondragleave = function(e){
+			document.getElementById("all_page").style.border = "";
+			e.stopPropagation();
+            e.preventDefault();
+		};
+		
+		document.getElementById("all_page").ondrop = function(e){
+			e.stopPropagation();
+            e.preventDefault();
+			document.getElementById("all_page").style.border = "";
+			
+			var files = e.dataTransfer.files;
+			
+			if (files[0].type == "text/plain"){
+				file_name.value = " File：" + files[0]["name"];
+			
+				var f = files[0];
+				var reader = new FileReader();
+					
+					
+				reader.onload = function(e) {  
+					bfile = e.target.result 
+					var data1 = bfile.split('\r\n');
+					var data_point = [];
+					var data_dim = 3;
+					for (var i=0;i<data1.length;i++){
+						var d_point = data1[i].split(' ');
+						data_dim = d_point.length;
+						var d_point1 = [];
+						for (var j=0;j<d_point.length;j++){
+							d_point1.push((parseFloat(d_point[j])-0.5)*4.0);
+						}
+							
+						data_point.push(d_point1);
+					}
+						//console.log(bfile);
+					sessionStorage.clear();
+					var data2 = {'dix':3,'point':[[0,0,0],[0.1,0.1,0.1],[0.3,0.3,-0.3],[-1.0,-1.0,-1.0],[-1.2,-1.2,-1.2],[-1.5,-1.5,-1.5],[-1.8,1.5,-1.0]
+							  ,[1.5,-1.8,-1.5],[-1.5,-1.5,-1.5],[1.5,-1.5,1.5],[0,0,0],[0.1,0.1,0.1],[0.3,0.3,-0.3],[-1.0,-1.0,-1.0],[-1.2,-1.2,-1.2],[-1.5,-1.5,-1.5],[-1.8,1.5,-1.0]
+							  ,[1.5,-1.8,-1.5],[-1.5,-1.5,-1.5],[1.5,-1.5,1.5]],'file_name':files[0]["name"],"boolen":false};
+						
+					var data3 = {'dix':data_dim,'point':data_point,'file_name':files[0]["name"],"boolen":false};
+							   
+						//console.log(files[0]["name"]);
+					sessionStorage.setItem('data', JSON.stringify(data3));
+					location.reload();
+				}
+
+				reader.readAsText(f);
+			}
+			else{
+				window.alert("檔案類型錯誤，本系統只接受文字檔");
+			}
+			
+		};
+		document.getElementById("s_value").onkeydown = function(e){
+			
+			if (e.keyCode == 39){
+				AnimationAction.timeScale = 1;
+				show_speed.innerText = AnimationAction.timeScale;
+			}
+			else if(e.keyCode == 37){
+				AnimationAction.timeScale = 1;
+				show_speed.innerText = AnimationAction.timeScale;
+			}
+		}
+		
+		slider.oninput = go_to;
+		//animate();
+		container.append(renderer.domElement);
+		
+ 
+		/*ctx.beginPath();
+//我們用moveTo(x,y)來指定線的起點座標
+		ctx.moveTo(50,50)
+		//之後使用lineTo(x,y)來指定與前一個座標相連的點
+		ctx.lineTo(100,50)
+		//用stroke()來繪製相連點的線
+		ctx.stroke()*/
+	</script>
+</html>

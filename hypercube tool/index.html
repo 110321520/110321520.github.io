@@ -1,0 +1,2400 @@
+<html>
+	<head>
+		<script src="js/Chart.min.js"></script>
+		<script src="js/fix-webm-duration.js"></script>
+		<script type="text/javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+		</script>
+		<link rel="stylesheet" href="bootstrap-5.3.0-alpha3-dist\css\bootstrap.min.css">
+		<link rel="stylesheet" href="./drag-test.css">
+		<script src="js/drag-test.js" defer></script>
+		<!-- <script src="/js/index.js"></script> -->
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+		<script src="https://html2canvas.hertzen.com/dist/html2canvas.js"> </script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+		<script src="bootstrap-5.3.0-alpha3-dist/js/bootstrap.min.js"></script>
+		<script src="js/RecordRTC.min.js"></script>
+		<script type="importmap">
+		  {
+			"imports": {
+			  "three": "https://unpkg.com/three@0.151.3/build/three.module.js",
+			  "three/addons/": "https://unpkg.com/three@0.151.3/examples/jsm/"
+			}
+		  }
+		</script>
+			
+	</head>
+	
+	<body>
+		<div class="container mt-3" >
+			<center>
+			
+				<button type="button" class="btn btn-outline-secondary" onclick="location.href='../circuit checker/index.html'"><img  src="image\atom.png"></button>
+				<button id = "example" type="button" class="btn btn-outline-secondary"><img src="image\example.png"></button>
+				<button id = "photo" type="button" class="btn btn-outline-secondary"><img  src="image\camera.png"></button>
+				<button id = "file" type="button" class="btn btn-outline-secondary"><img src="image\folder.png"></button>
+				<button id = "video" type="button" class="btn btn-outline-secondary"><img src="image\REC.png"></button>
+				<button id = "rec" hidden="true" type="button" class="btn btn-secondary"><img src="image\rec-button.png"></button>
+				<button id = "vs" disabled type="button" class="btn btn-outline-secondary"><img src="image\vs.png"></button>
+				<button id = "vs_b" hidden="true" type="button" class="btn btn-secondary"><img src="image\vs_b.png"></button>
+				<button id = "3D" hidden="true" type="button" class="btn btn-outline-secondary"><img src="image\3D.png"></button>
+				<button id = "2D" disabled type="button" class="btn btn-outline-secondary"><img src="image\2D.png"></button>
+				<button id = "1D" disabled type="button" class="btn btn-outline-secondary"><img src="image\1D.png"></button>
+			
+			<div id="all_page" style=" background-color:white; position: relative;">
+				<div style="height:10px;">
+				
+				</div>
+				<input  id = "file_name" type="text" type="text" class="form-range" class="form-range" disabled style=" text-align:left;  font-family:serif; width:74.3%;font-size:25px; height:40px;">
+				<div style="height:10px;">
+				
+				</div>
+				
+				<div id="scene-container">
+					<!--<canvas id="mainCanvas" style="border:1px solid #000000;">
+						
+					</canvas>-->
+					<textarea id = "info_" hidden="true" class="form-control" disabled placeholder="Leave a comment here" id="floatingTextarea2" style="position:absolute; right:168px;top:60px; width:210px; height: 500px; resize:none; "></textarea>
+					<textarea id = "info_vs" hidden="true" class="form-control" disabled placeholder="Leave a comment here" id="floatingTextarea2" style="position:absolute; right:918px;top:60px; width:210px; height: 500px; resize:none; "></textarea>
+					
+					<li id="position_value_x" hidden="true" class="list-group-item list-group-item-action list-group-item-danger" style="position:absolute; right:168px;top:603px; width:120px; text-align:left; font-family:serif; font-size:21px;"></li>
+					<li id="position_value_y" hidden="true" class="list-group-item list-group-item-action list-group-item-success" style="position:absolute;right:168px; top:635px; width:120px; text-align:left; font-family:serif; font-size:21px;" ></li>
+					<li id="position_value_z" hidden="true" class="list-group-item list-group-item-action list-group-item-primary" style="position:absolute; right:168px;top:667px; width:120px; text-align:left; font-family:serif; font-size:21px;"></li>
+				
+					<li id="position_value_x_vs" hidden="true" class="list-group-item list-group-item-action list-group-item-danger" style="position:absolute; right:1008px;top:603px; width:120px; text-align:left; font-family:serif; font-size:21px;">1</li>
+					<li id="position_value_y_vs" hidden="true" class="list-group-item list-group-item-action list-group-item-success" style="position:absolute;right:1008px; top:635px; width:120px; text-align:left; font-family:serif; font-size:21px;" >1</li>
+					<li id="position_value_z_vs" hidden="true" class="list-group-item list-group-item-action list-group-item-primary" style="position:absolute; right:1008px;top:667px; width:120px; text-align:left; font-family:serif; font-size:21px;">1</li>
+
+				</div >
+
+				<div style="height:20px;">
+					<input id = "s_value" type="range" class="form-range" min="0" max="5" step="0.5" style=" width:74.3%" >
+				</div>
+				<div style="height:10px;">
+				
+				</div>
+				<input  id = "generation" type="text" class="form-range" disabled style=" text-align:center;  font-family:serif; width:74.3%;font-size:25px; height:40px;">
+				<div style="height:10px;">
+				</div >
+				
+			</div>
+			
+			<button id = "stop_b" type="button" class="btn btn-outline-secondary"><img src="image\stop.png"></button>
+			<button id = "play_b" type="button" class="btn btn-outline-secondary"><img src="image\play.png"></button>
+			<button id = "play_p" hidden="true" type="button" class="btn btn-outline-secondary"><img src="image\pause.png"></button>
+			<button id = "dea" type="button" class="btn btn-outline-secondary"><img src="image\rewind.png"></button>
+			<button id = "acc" type="button" class="btn btn-outline-secondary"><img src="image\speed.png"></button>
+			<button id = "show_speed" type="button" class="btn btn-outline-secondary" style="width:65px; height:38px"></button>
+			<button id = "foot" type="button" class="btn btn-outline-secondary"><img src="image\foot-print.png"></button>
+			<button id = "foot_point" type="button" class="btn btn-outline-secondary"><img src="image\more.png"></button>
+			<button id = "reset_b" type="button" class="btn btn-outline-secondary" onclick="reset()"><img src="image\undo.png"></button>
+			<button id = "show_axis" class="btn btn-outline-secondary" type="button" ><img src="image\axis.png"></button>
+			<button id = "show_grid" class="btn btn-outline-secondary" type="button" ><img src="image\grid.png"></button>
+			<button id = "show_point" class="btn btn-outline-secondary" type="button" ><img src="image\info.png"></button>
+			<button id = "jump" type="button" class="btn btn-outline-secondary"><img src="image\jump.png"></button>
+			<input id = "jump_value" hidden="true" type="text" class="form-range" style = " width:49px; height:37px">
+			<button id = "input_x" hidden="true" type="button" class="btn btn-outline-secondary"><img src="image\x.png"></button>
+			<input id = "x_value" hidden="true" type="number" class="form-range" style = " width:49px; height:37px">
+			<button id = "input_y" hidden="true" type="button" class="btn btn-outline-secondary"><img src="image\y.png"></button>
+			<input id = "y_value" hidden="true" type="number" class="form-range" style = " width:49px; height:37px">
+			<button id = "input_z"hidden="true"  type="button" class="btn btn-outline-secondary"><img src="image\z.png"></button>
+			<input id = "z_value" hidden="true" type="number" class="form-range" style = " width:49px; height:37px">
+			</center>
+		</div>
+	</body>
+
+	
+	<script type="module">
+		//let canvas = document.getElementById("mainCanvas");
+		//接著指定繪圖方式
+		//let ctx = canvas.getContext("2d");
+		//讓canvas的高度和寬度等於整個畫面，讓整個視窗都是你的畫布
+		//canvas.height = window.innerHeight*0.7;
+		//canvas.width = window.innerWidth*0.5;
+		
+		import * as THREE from 'three';
+		
+		//import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+		import { TrackballControls } from 'three/addons/controls/TrackballControls';
+
+		//import { LineSegments2 } from 'three/addons/lines/LineSegments2.js';
+		import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
+		import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
+		import { Line2 } from 'three/addons/lines/Line2.js';
+		
+		import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+		import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+		
+		const container = document.querySelector('#scene-container');
+		const scene = new THREE.Scene();
+		const camera = new THREE.PerspectiveCamera( 85, (window.innerWidth*0.5) / (window.innerHeight*0.7), 0.1, 1000 );
+		
+		const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+		scene.background = new THREE.Color(0xeeeeee);
+		renderer.setSize( window.innerWidth*0.5, 640 );
+		document.body.appendChild( renderer.domElement );
+		
+		
+		/*const linesegment = new THREE.LineSegments(geometry,new THREE.LineBasicMaterial({color: 0x000000,
+													linewidth: 1,
+													} ));*/
+													
+		
+		var slider = document.getElementById("s_value");
+		var savedData = sessionStorage.getItem('data');
+		var data_points = [[0,0,0],[0,0,0]];
+		var vs_points = [[0,0,0],[0,0,0]];
+		var i_x = 0;
+		var i_y = 1;
+		var i_z = 2;
+		var maxdim = 0;
+		var vs_conter = 0;
+		
+		let info_data = [];
+		let info_data_vs = [];
+		
+		const file_name = document.getElementById("file_name");
+		const generation = document.getElementById("generation");
+		var dim = 3;
+		if (savedData){
+			
+			
+			document.getElementById("vs").disabled = false;
+			data_points = JSON.parse(savedData)['point'];
+			vs_points = JSON.parse(savedData)['vs_point'];
+			
+			file_name.value = " File：" + JSON.parse(savedData)['file_name'];
+			slider.disabled = JSON.parse(savedData)['boolen'];
+			dim = JSON.parse(savedData)['dix'];
+			maxdim = JSON.parse(savedData)['max_dim'];
+			
+			info_data_vs = JSON.parse(savedData)['vs_info_data'];
+			info_data = JSON.parse(savedData)['info_data'];
+			
+			i_x = JSON.parse(savedData)['x'];
+			i_y = JSON.parse(savedData)['y'];
+			i_z = JSON.parse(savedData)['z'];
+			
+			vs_conter = JSON.parse(savedData)['vs_c'];
+			
+			if (dim == 3){
+				document.getElementById("input_x").hidden = false;
+				document.getElementById("input_y").hidden = false;
+				document.getElementById("input_z").hidden = false;
+				
+				document.getElementById("x_value").max = maxdim;
+				document.getElementById("y_value").max = maxdim;
+				document.getElementById("z_value").max = maxdim;
+				
+				document.getElementById("x_value").min = 1;
+				document.getElementById("y_value").min = 1;
+				document.getElementById("z_value").min = 1;
+				
+				document.getElementById("x_value").value = i_x+1;
+				document.getElementById("y_value").value = i_y+1;
+				document.getElementById("z_value").value = i_z+1;
+			}	
+			else if(dim == 2){
+				document.getElementById("input_x").hidden = false;
+				document.getElementById("input_y").hidden = false;
+				
+				document.getElementById("x_value").max = maxdim;
+				document.getElementById("y_value").max = maxdim;
+				
+				document.getElementById("x_value").min = 1;
+				document.getElementById("y_value").min = 1;
+
+				document.getElementById("x_value").value = i_x+1;
+				document.getElementById("y_value").value = i_y+1;
+			}
+			else{
+				document.getElementById("input_x").hidden = false;
+					
+				document.getElementById("x_value").max = maxdim;
+			
+				document.getElementById("x_value").min = 1;
+				
+				document.getElementById("x_value").value = i_x+1;
+			}
+		}
+		else{
+			file_name.value = " File：";
+			generation.value = 1 +"/" + 1 + "(generation)";
+			slider.disabled = true;
+		}
+
+		if (vs_conter == 1){
+			document.getElementById("vs").hidden = true;
+			document.getElementById("vs_b").hidden = false;
+		}
+		else {
+			document.getElementById("vs_b").hidden = true;
+			document.getElementById("vs").hidden = false;
+		}
+		
+		
+		/*var data_points = [[0,0,0],[0.1,0.1,0.1],[0.3,0.3,-0.3],[-1.0,-1.0,-1.0],[-1.2,-1.2,-1.2],[-1.5,-1.5,-1.5],[-1.8,1.5,-1.0]
+		                   ,[1.5,-1.8,-1.5],[-1.5,-1.5,-1.5],[1.5,-1.5,1.5],[0,0,0],[0.1,0.1,0.1],[0.3,0.3,-0.3],[-1.0,-1.0,-1.0],[-1.2,-1.2,-1.2],[-1.5,-1.5,-1.5],[-1.8,1.5,-1.0]
+		                   ,[1.5,-1.8,-1.5],[-1.5,-1.5,-1.5],[1.5,-1.5,1.5]];*/
+		
+		
+		const pointgeometry = new THREE.SphereGeometry( 0.1 );
+		const material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+		const sphere = new THREE.Mesh( pointgeometry, material );
+		
+		const pointgeometry2 = new THREE.SphereGeometry( 0.1 );
+		const material2 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+		const sphere2 = new THREE.Mesh( pointgeometry2, material2 );
+		
+		if (dim == 3){
+			
+			document.getElementById("2D").disabled = false;
+			document.getElementById("2D").hidden = false;
+			document.getElementById("1D").hidden = false;
+			document.getElementById("1D").disabled = false;
+			document.getElementById("3D").hidden = true;
+				
+			var data_ = [];
+			var vs_data_ = [];
+			
+			for (var i=0;i<data_points.length;i++){
+				var data = new THREE.Vector3(data_points[i][i_x],data_points[i][i_y],data_points[i][i_z]);	
+				data_.push(data);
+			}
+			
+			
+			for (var i=0;i<vs_points.length;i++){
+				var vs_data = new THREE.Vector3(vs_points[i][i_x],vs_points[i][i_y],vs_points[i][i_z]);
+				vs_data_.push(vs_data);
+			}
+			
+			var curve = new THREE.CatmullRomCurve3(data_);
+			const loader = new FontLoader();
+			const geometry = new THREE.BoxHelper(new THREE.Mesh(new THREE.BoxGeometry(4,4,4)),0x000000);
+			scene.add(geometry);
+			loader.load( 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+
+				const text_000 = new TextGeometry( '000', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_000 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_000 = new THREE.Mesh( text_000, textMaterial_000 );
+				mesh_000.position.set( -2.2, -2.3, -2.2 );
+
+				scene.add( mesh_000 );
+				
+				const text_001 = new TextGeometry( '001', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_001 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_001 = new THREE.Mesh( text_001, textMaterial_001 );
+				mesh_001.position.set( -2.1, -2.3, 2.1 );
+
+				scene.add( mesh_001 );
+				
+				const text_010 = new TextGeometry( '010', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_010 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_010 = new THREE.Mesh( text_010, textMaterial_010 );
+				mesh_010.position.set( -2.1, 2.1, -2.1 );
+
+				scene.add( mesh_010 );
+				
+				const text_011 = new TextGeometry( '011', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_011 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_011 = new THREE.Mesh( text_011, textMaterial_011 );
+				mesh_011.position.set( -2.1, 2.1, 2.1 );
+
+				scene.add( mesh_011 );
+				
+				const text_1 = new TextGeometry( '100', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_100 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_100 = new THREE.Mesh( text_1, textMaterial_100 );
+				mesh_100.position.set( 1.6, -2.3, -2.1 );
+
+				scene.add( mesh_100 );
+				
+				const text_101 = new TextGeometry( '101', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_101 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_101 = new THREE.Mesh( text_101, textMaterial_101 );
+				mesh_101.position.set( 1.6, -2.3, 2.1 );
+
+				scene.add( mesh_101 );
+				
+				const text_110 = new TextGeometry( '110', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_110 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_110 = new THREE.Mesh( text_110, textMaterial_110 );
+				mesh_110.position.set( 1.6, 2.1, -2.1 );
+
+				scene.add( mesh_110 );
+				
+				const text_111 = new TextGeometry( '111', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_111 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_111 = new THREE.Mesh( text_111, textMaterial_111 );
+				mesh_111.position.set( 1.6, 2.1, 2.1 );
+
+				scene.add( mesh_111 );
+			} );
+			
+			var curve2 = new THREE.CatmullRomCurve3(vs_data_);
+			var compare_points = curve2.getPoints(vs_points.length-1);
+			var points = curve.getPoints(data_points.length-1);
+
+			var posArr2 = [];
+				
+			var max_length = 0;
+				
+			if (data_points.length > vs_points.length){
+				max_length = data_points.length;
+			}
+			else{
+				max_length = vs_points.length;
+			}
+				
+				// 生成一个时间序列
+			for (var i=0;i<max_length;i++){
+				if (i > vs_points.length-1){
+					posArr2.push(compare_points[vs_points.length-1]['x'],compare_points[vs_points.length-1]['y'],compare_points[vs_points.length-1]['z'])
+				}
+				else{
+					posArr2.push(compare_points[i]['x'],compare_points[i]['y'],compare_points[i]['z'])
+				}
+			}	
+				
+			
+			let arr = [];
+			for (let i = 0; i < max_length; i++) {
+			  arr.push(i);
+				  
+			}
+				// 生成一个时间序列
+			var times = new Float32Array(arr);
+
+			var posArr = [];
+				
+			for (var i=0;i<max_length;i++){
+				if (i > data_points.length-1){
+					posArr.push(points[data_points.length-1]['x'],points[data_points.length-1]['y'],points[data_points.length-1]['z'])
+				}
+				else{
+					posArr.push(points[i]['x'],points[i]['y'],points[i]['z'])
+				}
+			}
+			
+		}
+		else if(dim == 2){	
+			
+			if(maxdim == 2){
+				document.getElementById("3D").disabled = true;
+				document.getElementById("3D").hidden = false;
+				document.getElementById("2D").hidden = true;
+				document.getElementById("1D").hidden = false;
+			document.getElementById("1D").disabled = false;
+			}
+			else if(maxdim > 2){
+				document.getElementById("3D").disabled = false;
+				document.getElementById("3D").hidden = false;
+				document.getElementById("2D").hidden = true;
+				document.getElementById("1D").hidden = false;
+				document.getElementById("1D").disabled = false;
+			}
+			
+			
+			var data_ = [];
+			var vs_data_ = [];
+			
+			for (var i=0;i<data_points.length;i++){
+				var data = new THREE.Vector3(data_points[i][i_x],data_points[i][i_y],0);
+				data_.push(data);
+			}
+			
+			for (var i=0;i<vs_points.length;i++){
+				var vs_data = new THREE.Vector3(vs_points[i][i_x],vs_points[i][i_y],0);
+				vs_data_.push(vs_data);
+			}
+			var curve = new THREE.CatmullRomCurve3(data_ );
+			
+			
+			/*const material = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true });
+			const mesh = new THREE.Mesh(new THREE.PlaneGeometry(4, 4), material);
+			const plane = new THREE.Plane( new THREE.Vector2( 4,4 ), 3 );
+			const helper = new THREE.PlaneHelper( plane, 1, 0xffff00 );
+			scene.add( helper );*/
+			
+			const geometry = new THREE.PlaneGeometry(4,4);
+			const material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+			const plane = new THREE.Mesh( geometry, material );
+			scene.add( plane );
+			const loader = new FontLoader();
+			loader.load( 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+
+				const text_00 = new TextGeometry( '00', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_00 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_00 = new THREE.Mesh( text_00, textMaterial_00 );
+				mesh_00.position.set( -2.1, -2.3 );
+
+				scene.add( mesh_00 );
+				
+				const text_01 = new TextGeometry( '01', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_01 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_01 = new THREE.Mesh( text_01, textMaterial_01 );
+				mesh_01.position.set( -2.1, 2.1 );
+
+				scene.add( mesh_01 );
+				
+				const text_10 = new TextGeometry( '10', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_10 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_10 = new THREE.Mesh( text_10, textMaterial_10 );
+				mesh_10.position.set(  1.8, -2.3 );
+
+				scene.add( mesh_10 );
+				
+
+				
+				const text_11 = new TextGeometry( '11', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_11 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_11 = new THREE.Mesh( text_11, textMaterial_11 );
+				mesh_11.position.set( 1.8, 2.1 );
+
+				scene.add( mesh_11 );
+				
+				
+			} );
+			
+			
+			var curve2 = new THREE.CatmullRomCurve3(vs_data_);
+			var compare_points = curve2.getPoints(vs_points.length-1);
+			var points = curve.getPoints(data_points.length-1);
+				
+			/*var times2 = new Float32Array(arr2);
+			let arr2 = [];*/
+			var posArr2 = [];
+				
+			var max_length = 0;
+				
+			if (data_points.length > vs_points.length){
+				max_length = data_points.length;
+			}
+			else{
+				max_length = vs_points.length;
+			}
+				
+				// 生成一个时间序列
+			for (var i=0;i<max_length;i++){
+				if (i > vs_points.length-1){
+					posArr2.push(compare_points[vs_points.length-1]['x'],compare_points[vs_points.length-1]['y'],compare_points[vs_points.length-1]['z'])
+				}
+				else{
+					posArr2.push(compare_points[i]['x'],compare_points[i]['y'],compare_points[i]['z'])
+				}
+			}	
+				
+			
+			let arr = [];
+			for (let i = 0; i < max_length; i++) {
+			  arr.push(i);
+				  
+			}
+				// 生成一个时间序列
+			var times = new Float32Array(arr);
+
+			var posArr = [];
+				
+			for (var i=0;i<max_length;i++){
+				if (i > data_points.length-1){
+					posArr.push(points[data_points.length-1]['x'],points[data_points.length-1]['y'],points[data_points.length-1]['z'])
+				}
+				else{
+					posArr.push(points[i]['x'],points[i]['y'],points[i]['z'])
+				}
+			}
+			
+			/*var points = curve.getPoints(data_points.length-1);
+			
+			let arr = [];
+			for (let i = 0; i < data_points.length; i++) {
+			  arr.push(i);
+			  
+			}
+			// 生成一个时间序列
+			var times = new Float32Array(arr);
+
+			var posArr = [];
+			points.forEach(elem => {
+			  posArr.push(elem.x, elem.y,elem.z);
+			});
+			*/
+			
+			
+			/*if (vs_conter == 1){	
+				var curve2 = new THREE.CatmullRomCurve3(vs_data_);
+				var compare_points = curve2.getPoints(vs_points.length-1);
+				var points = curve.getPoints(data_points.length-1);
+				
+				var times2 = new Float32Array(arr2);
+				let arr2 = [];
+				var posArr2 = [];
+				
+				var max_length = 0;
+				
+				if (data_points.length > vs_points.length){
+					max_length = data_points.length;
+				}
+				else{
+					max_length = vs_points.length;
+				}
+				
+				// 生成一个时间序列
+				for (var i=0;i<max_length;i++){
+					if (i > vs_points.length-1){
+						posArr2.push(compare_points[vs_points.length-1]['x'],compare_points[vs_points.length-1]['y'],compare_points[vs_points.length-1]['z'])
+					}
+					else{
+						posArr2.push(compare_points[i]['x'],compare_points[i]['y'],compare_points[i]['z'])
+					}
+				}
+				
+				
+			
+				let arr = [];
+				for (let i = 0; i < max_length; i++) {
+				  arr.push(i);
+				  
+				}
+				// 生成一个时间序列
+				var times = new Float32Array(arr);
+
+				var posArr = [];
+				
+				for (var i=0;i<max_length;i++){
+					if (i > data_points.length-1){
+						posArr.push(points[data_points.length-1]['x'],points[data_points.length-1]['y'],points[data_points.length-1]['z'])
+					}
+					else{
+						posArr.push(points[i]['x'],points[i]['y'],points[i]['z'])
+					}
+				}
+				
+				
+				/*points.forEach(elem => {
+				  posArr.push(elem.x, elem.y,elem.z);
+				});
+			}
+			else{
+				var points = curve.getPoints(data_points.length-1);
+			
+				let arr = [];
+				for (let i = 0; i < data_points.length; i++) {
+				  arr.push(i);
+				  
+				}
+				// 生成一个时间序列
+				var times = new Float32Array(arr);
+
+				var posArr = [];
+				points.forEach(elem => {
+				  posArr.push(elem.x, elem.y,elem.z);
+				});
+
+			}*/
+		}
+		else{
+			if(maxdim == 1){
+				document.getElementById("3D").disabled = true;
+				document.getElementById("3D").hidden = false;
+				document.getElementById("1D").hidden = true;
+				document.getElementById("2D").hidden = false;
+				document.getElementById("2D").disabled = true;
+			}
+			else if(maxdim == 2){
+				document.getElementById("3D").disabled =true;
+				document.getElementById("3D").hidden = false;
+				document.getElementById("1D").hidden = true;
+				document.getElementById("2D").hidden = false;
+				document.getElementById("2D").disabled = false;
+			}
+			else{
+				document.getElementById("3D").disabled = false;
+				document.getElementById("3D").hidden = false;
+				document.getElementById("1D").hidden = true;
+				document.getElementById("2D").hidden = false;
+				document.getElementById("2D").disabled = false;
+			}
+			
+			var data_ = [];
+			var vs_data_ = [];
+			
+			for (var i=0;i<data_points.length;i++){
+				var data = new THREE.Vector3(0,data_points[i][i_x],0);
+				data_.push(data);
+			}
+			
+			for (var i=0;i<vs_points.length;i++){
+				var vs_data = new THREE.Vector3(0,vs_points[i][i_x],0);
+				vs_data_.push(vs_data);
+			}
+			var curve = new THREE.CatmullRomCurve3(data_ );
+			
+			
+			/*const material = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true });
+			const mesh = new THREE.Mesh(new THREE.PlaneGeometry(4, 4), material);
+			const plane = new THREE.Plane( new THREE.Vector2( 4,4 ), 3 );
+			const helper = new THREE.PlaneHelper( plane, 1, 0xffff00 );
+			scene.add( helper );*/
+			
+			const material = new THREE.LineBasicMaterial({
+				color: 0x000000
+			});
+
+			const one_points = [];
+			one_points.push( -0.25, -2, 0 );
+			one_points.push( -0.25, 2, 0  );
+			 
+			const geometry = new LineGeometry().setPositions(one_points);
+		
+			const line_p = new LineMaterial({color:0x6F00D2,linewidth:0.003});
+			//me.resolution.set(window.innerWidth, window.innerHeight);
+			const line = new Line2(geometry,line_p);
+			
+			scene.add( line );
+			
+			/*const edges = new THREE.EdgesGeometry( geometry ); 
+			const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial( { color: 0xffffff } ) ); */
+			
+			
+			/*const geometry = new THREE.PlaneGeometry(4,4);
+			const material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+			const plane = new THREE.Mesh( geometry, material );
+			scene.add( plane );*/
+			const loader = new FontLoader();
+			loader.load( 'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function ( font ) {
+
+				const text_0 = new TextGeometry( '0', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_0 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_0 = new THREE.Mesh( text_0, textMaterial_0 );
+				mesh_0.position.set( -0.33, -2.35 );
+
+				scene.add( mesh_0 );
+				
+				const text_1 = new TextGeometry( '1', {
+					font: font,
+					size: 0.2,
+					height: 0,
+					
+				} );
+				
+				const textMaterial_1 = new THREE.MeshBasicMaterial( { color: 0x0000ff } );
+
+				const mesh_1 = new THREE.Mesh( text_1, textMaterial_1 );
+				mesh_1.position.set( -0.33, 2.2 );
+
+				scene.add( mesh_1 );
+				
+			} );
+			
+			
+			var curve2 = new THREE.CatmullRomCurve3(vs_data_);
+			var compare_points = curve2.getPoints(vs_points.length-1);
+			var points = curve.getPoints(data_points.length-1);
+				
+			/*var times2 = new Float32Array(arr2);
+			let arr2 = [];*/
+			var posArr2 = [];
+				
+			var max_length = 0;
+				
+			if (data_points.length > vs_points.length){
+				max_length = data_points.length;
+			}
+			else{
+				max_length = vs_points.length;
+			}
+				
+				// 生成一个时间序列
+			for (var i=0;i<max_length;i++){
+				if (i > vs_points.length-1){
+					posArr2.push(compare_points[vs_points.length-1]['x'],compare_points[vs_points.length-1]['y'],compare_points[vs_points.length-1]['z'])
+				}
+				else{
+					posArr2.push(compare_points[i]['x'],compare_points[i]['y'],compare_points[i]['z'])
+				}
+			}	
+				
+			
+			let arr = [];
+			for (let i = 0; i < max_length; i++) {
+			  arr.push(i);
+				  
+			}
+				// 生成一个时间序列
+			var times = new Float32Array(arr);
+
+			var posArr = [];
+				
+			for (var i=0;i<max_length;i++){
+				if (i > data_points.length-1){
+					posArr.push(points[data_points.length-1]['x'],points[data_points.length-1]['y'],points[data_points.length-1]['z'])
+				}
+				else{
+					posArr.push(points[i]['x'],points[i]['y'],points[i]['z'])
+				}
+			}
+		}
+		
+		var values = new Float32Array(posArr);
+		
+		//console.log(values);
+		// 创建一个帧动画的关键帧数据，曲线上的位置序列对应一个时间序列
+		var posTrack = new THREE.KeyframeTrack('.position', times, values);
+		
+		
+		let duration = data_points.length;
+		if (vs_conter == 1){
+			if (data_points.length > vs_points.length){
+				duration = data_points.length;
+			}
+			else{
+				duration = vs_points.length;
+			}
+		}
+		
+		let clip = new THREE.AnimationClip("default", duration, [posTrack]);
+		var mixer = new THREE.AnimationMixer(sphere);
+		let AnimationAction = mixer.clipAction(clip);
+		AnimationAction.timeScale = 1;
+		AnimationAction.play();
+		AnimationAction.loop = THREE.LoopOnce;
+		
+		var values2 = new Float32Array(posArr2);
+		
+		
+		// 创建一个帧动画的关键帧数据，曲线上的位置序列对应一个时间序列
+		var posTrack2 = new THREE.KeyframeTrack('.position', times, values2);
+		let clip2 = new THREE.AnimationClip("default", duration, [posTrack2]);
+		var mixer2 = new THREE.AnimationMixer(sphere2);
+		let AnimationAction2 = mixer2.clipAction(clip2);
+		AnimationAction2.timeScale = 1;
+		AnimationAction2.play();
+		AnimationAction2.loop = THREE.LoopOnce;
+		// 创建一个和时间序列相对应的位置坐标系列
+		/*var values = new Float32Array(posArr);
+		
+		
+		// 创建一个帧动画的关键帧数据，曲线上的位置序列对应一个时间序列
+		var posTrack = new THREE.KeyframeTrack('.position', times, values);
+		let duration = data_points.length+1;
+		console.log(posTrack);
+		let clip = new THREE.AnimationClip("default", duration, [posTrack]);
+		var mixer = new THREE.AnimationMixer(sphere);
+
+		let AnimationAction = mixer.clipAction(clip);
+		AnimationAction.timeScale = 1;
+		AnimationAction.play();
+		AnimationAction.loop = THREE.LoopOnce;*/
+		
+													
+		//linesegment.computeLineDistances();
+		
+		/*const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+		const material = new THREE.MeshToonMaterial({color:0x00e3e3});
+		const cube = new THREE.Mesh( geometry, material );*/
+		
+		const light = new THREE.AmbientLight(0xffffff, 1);
+		
+		//scene.add( cube );
+		scene.add( light );
+		
+		camera.position.z = 5;
+		const trackballControls = new TrackballControls(camera, renderer.domElement);
+		 trackballControls.rotateSpeed = 2.0;
+		 trackballControls.zoomSpeed = 1.0;
+		 trackballControls.panSpeed = 0.3;
+
+		/*const controls = new OrbitControls( camera, renderer.domElement );
+		//camera.position.set( 0, 20, 100 );
+		controls.update();*/
+		
+		var a=0;
+		var b=0;
+		
+		slider.min = 0;
+		slider.max = duration-1;
+		slider.step = 1;
+		var show_speed = document.getElementById("show_speed");
+		show_speed.innerText = AnimationAction.timeScale;
+		
+		const axesHelper = new THREE.AxesHelper( 2 );
+		
+		scene.add( sphere );
+		if (vs_conter == 1){
+			scene.add( sphere2 );
+			
+		}
+		else{
+			scene.remove( sphere2 );
+			
+		}
+		
+		//slider.max = 
+		/*function animate() {
+			
+			trackballControls.update();
+			
+			if (a != 0){
+				sphere.position.x=points[b][0];
+				sphere.position.y=points[b][1];
+				sphere.position.z=points[b][2];
+				if (b < 9){
+					b++;
+				}
+				
+			}
+			
+			
+			
+			renderer.render( scene, camera );
+			
+			requestAnimationFrame( animate );
+			
+		}*/
+		
+		
+		const go = new LineGeometry().setPositions(posArr);
+		
+		const me = new LineMaterial({color:0x000000,linewidth:0.003});
+		//me.resolution.set(window.innerWidth, window.innerHeight);
+		const mes = new Line2(go,me);
+		//mes.computeLineDistances();
+		
+		const go2 = new LineGeometry().setPositions(posArr2);
+		
+		const me2 = new LineMaterial({color:0x0000ff,linewidth:0.003});
+		//me.resolution.set(window.innerWidth, window.innerHeight);
+		const mes2 = new Line2(go2,me2);
+		
+		
+		//var gridX = new THREE.GridHelper(4, 1,0x0000ff);
+		
+		var gridXY = new THREE.GridHelper(4, 10,0x0000ff);
+		var gridYZ = new THREE.GridHelper(4, 10,0x0000ff);
+		var gridXZ = new THREE.GridHelper(4, 10,0x0000ff);
+		
+		var gridXY2 = new THREE.GridHelper(4, 10,0x0000ff);
+		var gridYZ2 = new THREE.GridHelper(4, 10,0x0000ff);
+		var gridXZ2 = new THREE.GridHelper(4, 10,0x0000ff);
+		
+		var m_points = [];
+			m_points.push( -0.25,0,0 );
+			m_points.push( 0.25,0,0 );
+			const geometry_m = new LineGeometry().setPositions(m_points);
+			const line_m = new LineMaterial({color:0x00A600,linewidth:0.003});
+			const m_line = new Line2(geometry_m,line_m);
+			
+			
+			m_points = [];
+			m_points.push( -0.25,0.4,0 );
+			m_points.push( 0.25,0.4,0 );
+			const geometry_m2 = new LineGeometry().setPositions(m_points);	
+			const line_m2 = new LineMaterial({color:0xEA7500,linewidth:0.003});	
+			const m2_line = new Line2(geometry_m2,line_m2);
+			
+			m_points = [];
+			m_points.push( -0.25,0.8,0 );
+			m_points.push( 0.25,0.8,0 );
+			const geometry_m3 = new LineGeometry().setPositions(m_points);	
+			const line_m3 = new LineMaterial({color:0xEA7500,linewidth:0.003});	
+			const m3_line = new Line2(geometry_m3,line_m3);
+			
+			m_points = [];
+			m_points.push( -0.25,1.2,0 );
+			m_points.push( 0.25,1.2,0 );
+			const geometry_m4 = new LineGeometry().setPositions(m_points);	
+			const line_m4 = new LineMaterial({color:0xEA7500,linewidth:0.003});	
+			const m4_line = new Line2(geometry_m4,line_m4);
+			
+			m_points = [];
+			m_points.push( -0.25,1.6,0 );
+			m_points.push( 0.25,1.6,0 );
+			const geometry_m5 = new LineGeometry().setPositions(m_points);	
+			const line_m5 = new LineMaterial({color:0xEA7500,linewidth:0.003});	
+			const m5_line = new Line2(geometry_m5,line_m5);
+			
+			m_points = [];
+			m_points.push( -0.25,-0.4,0 );
+			m_points.push( 0.25,-0.4,0 );
+			const geometry_m6 = new LineGeometry().setPositions(m_points);	
+			const line_m6 = new LineMaterial({color:0xEA7500,linewidth:0.003});	
+			const m6_line = new Line2(geometry_m6,line_m6);
+		
+			m_points = [];
+			m_points.push( -0.25,-0.8,0 );
+			m_points.push( 0.25,-0.8,0 );
+			const geometry_m7 = new LineGeometry().setPositions(m_points);	
+			const line_m7 = new LineMaterial({color:0xEA7500,linewidth:0.003});	
+			const m7_line = new Line2(geometry_m7,line_m7);
+			
+			m_points = [];
+			m_points.push( -0.25,-1.2,0 );
+			m_points.push( 0.25,-1.2,0 );
+			const geometry_m8 = new LineGeometry().setPositions(m_points);	
+			const line_m8 = new LineMaterial({color:0xEA7500,linewidth:0.003});	
+			const m8_line = new Line2(geometry_m8,line_m8);
+			
+			m_points = [];
+			m_points.push( -0.25,-1.6,0 );
+			m_points.push( 0.25,-1.6,0 );
+			const geometry_m9 = new LineGeometry().setPositions(m_points);	
+			const line_m9 = new LineMaterial({color:0xEA7500,linewidth:0.003});	
+			const m9_line = new Line2(geometry_m9,line_m9);
+			
+		if(dim == 2){
+			gridXY.position.z = 0, 0
+			gridXY.position.y = 0
+			gridXY.rotation.x = Math.PI / 2;
+		}
+		else if(dim == 3){
+			gridXY.position.z = -2;
+			gridXY.position.y = 0;
+			gridXY.rotation.x = Math.PI / 2;
+			
+			gridYZ.position.x = -2;
+			gridYZ.position.y = 0;
+			gridYZ.rotation.z = Math.PI / 2;
+			
+			gridXZ.position.y = -2;
+			
+			gridXY2.position.z = 2;
+			gridXY2.position.y = 0;
+			gridXY2.rotation.x = Math.PI / 2;
+			
+			gridYZ2.position.x = 2;
+			gridYZ2.position.y = 0;
+			gridYZ2.rotation.z = Math.PI / 2;
+			
+			gridXZ2.position.y = 2;
+		}
+		
+		
+		
+		const pointgeometry3 = new THREE.SphereGeometry( 0.02 );
+		const material3 = new THREE.MeshBasicMaterial( { color: 0xAA0000 } );
+		const material4 = new THREE.MeshBasicMaterial( { color: 0x0000AA } );
+		//const sphere3 = new THREE.Mesh( pointgeometry3, material3 );
+		let a_foot = [];
+		let b_foot = [];
+		
+		for (var i=0;i<data_points.length-1;i++){
+			const sphere3 = new THREE.Mesh( pointgeometry3, material3 );
+			a_foot.push(sphere3);
+		}
+		
+		for (var i=0;i<vs_points.length-1;i++){
+			const sphere4 = new THREE.Mesh( pointgeometry3, material4 );
+			b_foot.push(sphere4);
+		}
+		
+		var clock = new THREE.Clock();//声明一个时钟对象
+		function render() {
+			trackballControls.update();
+			renderer.render(scene, camera);
+			requestAnimationFrame(render);
+			mixer.update(clock.getDelta());
+			mixer2.update(clock.getDelta());
+			
+			if (dot_conter==1){
+				/*if (parseInt(AnimationAction.time) > 0){
+					scene.add(a_foot[parseInt(AnimationAction.time)-1]);
+					if (dim == 3){
+						a_foot[parseInt(AnimationAction.time)-1].position.set(data_points[parseInt(AnimationAction.time)-1][i_x],data_points[parseInt(AnimationAction.time)-1][i_y],data_points[parseInt(AnimationAction.time)-1][i_z]);
+					}
+					else{
+						a_foot[parseInt(AnimationAction.time)-1].position.set(data_points[parseInt(AnimationAction.time)-1][i_x],data_points[parseInt(AnimationAction.time)-1][i_y],0);
+					}
+					
+				}
+				else if (parseInt(AnimationAction.time) <= 0){
+					for(var i=0;i<data_points.length-1;i++){
+						scene.add(a_foot[i]);
+					}
+				}*/
+				if (parseInt(AnimationAction.time) > 0){
+					
+					if (parseInt(AnimationAction.time)-1 <= data_points.length -1){
+						
+						for (var i=0;i<parseInt(AnimationAction.time);i++){
+							scene.add(a_foot[i]);
+							if (dim == 3){
+								a_foot[i].position.set(data_points[i][i_x],data_points[i][i_y],data_points[i][i_z]);
+							}
+							else if(dim == 2){
+								a_foot[i].position.set(data_points[i][i_x],data_points[i][i_y],0);
+							}
+							else if(dim == 1){
+								a_foot[i].position.set(0,data_points[i][i_x],0);
+							}
+						}
+					}
+					
+					
+					for (var i=parseInt(AnimationAction.time);i<data_points.length -1;i++){
+						scene.remove(a_foot[i]);
+					}
+					
+					if (vs_conter == 1){
+						if (parseInt(AnimationAction.time)-1 <= vs_points.length -1){
+							
+							for (var i=0;i<parseInt(AnimationAction.time);i++){
+								scene.add(b_foot[i]);
+								if (dim == 3){
+									b_foot[i].position.set(vs_points[i][i_x],vs_points[i][i_y],vs_points[i][i_z]);
+								}
+								else if(dim == 2){
+									b_foot[i].position.set(vs_points[i][i_x],vs_points[i][i_y],0);
+								}
+								else{
+									b_foot[i].position.set(0,vs_points[i][i_x],0);
+								}
+							}
+						}
+						
+						for (var i=parseInt(AnimationAction.time);i<vs_points.length -1;i++){
+							scene.remove(b_foot[i]);
+						}
+					}
+					
+					
+					
+				}
+				/*for (var i=0;i<data_points.length-1;i++){
+					if (i < parseInt(AnimationAction.time)){
+						
+						if (dim == 3){
+							a_foot[i].position.set(data_points[i][i_x],data_points[i][i_y],data_points[i][i_z]);
+						}
+						else{
+							a_foot[i].position.set(data_points[i][i_x],data_points[i][i_y],0);
+						}
+					}
+					else{
+						scene.remove(a_foot[i]);
+					}
+				}
+				
+				if (vs_conter == 1){
+					for (var i=0;i<vs_points.length-1;i++){
+						if (i < parseInt(AnimationAction.time)){
+							scene.add(b_foot[i]);
+							if (dim == 3){
+								b_foot[i].position.set(vs_points[i][i_x],vs_points[i][i_y],vs_points[i][i_z]);
+							}
+							else{
+								b_foot[i].position.set(vs_points[i][i_x],vs_points[i][i_y],0);
+							}
+							
+						}
+						else{
+							scene.remove(b_foot[i]);
+						}
+					}
+				}*/
+			}
+			else{
+				
+				for (var i=0;i<data_points.length-1;i++){
+					scene.remove(a_foot[i]);
+				}
+				
+				for (var i=0;i<vs_points.length-1;i++){
+					scene.remove(b_foot[i]);
+				}
+				
+			}
+			
+			if (a==1){
+				AnimationAction.paused = false;
+				if (vs_conter == 1){
+					AnimationAction2.paused = false;
+				}
+			}
+			else{
+				AnimationAction.paused = true;
+				if (vs_conter == 1){
+					AnimationAction2.paused = true;
+				}
+			}
+			//console.log(AnimationAction.time);
+			//slider.vlaue = AnimationAction.time;
+			//console.log(AnimationAction.time);
+			if (parseFloat(AnimationAction.time) > parseInt(slider.max)){
+				AnimationAction.paused = true;
+				document.getElementById("play_p").hidden=true;
+				document.getElementById("play_b").hidden=false;
+				AnimationAction.time = slider.max;
+				a=0;
+				if (vs_conter == 1){
+					AnimationAction2.paused = true;
+					AnimationAction2.time = slider.max;
+				}
+			}
+			else{
+				slider.value = AnimationAction.time;
+				if (vs_conter == 1){
+					AnimationAction2.time = parseInt(slider.value);
+				}
+			}
+			if (savedData){
+				
+				if (vs_conter == 1){
+					if (vs_points.length > data_points.length){
+						generation.value = parseInt(AnimationAction.time)+1 + "/" + (vs_points.length) + "(generation)";
+					}
+					else{
+						generation.value = parseInt(AnimationAction.time)+1 + "/" + (data_points.length) + "(generation)";
+					}
+				}
+				else{
+					generation.value = parseInt(AnimationAction.time)+1 + "/" + (data_points.length) + "(generation)";
+				}
+				
+				
+				if(dim==2 &&  show_grid_conter==1){
+					scene.add(gridXY);
+				}
+				else if(dim==3 && show_grid_conter==1){
+					scene.add(gridXY);
+					scene.add(gridYZ);
+					scene.add(gridXZ);
+					
+				}
+				else if(dim == 1 && show_grid_conter==1){
+					scene.add( m_line );
+					scene.add( m2_line );
+					scene.add( m3_line );
+					scene.add( m4_line );
+					scene.add( m5_line );
+					scene.add( m6_line );
+					scene.add( m7_line );
+					scene.add( m8_line );
+					scene.add( m9_line );
+				}
+				else{
+					scene.remove(gridXY);
+					scene.remove(gridYZ);
+					scene.remove(gridXZ);
+					
+					scene.remove( m_line );
+					scene.remove( m2_line );
+					scene.remove( m3_line );
+					scene.remove( m4_line );
+					scene.remove( m5_line );
+					scene.remove( m6_line );
+					scene.remove( m7_line );
+					scene.remove( m8_line );
+					scene.remove( m9_line );
+				}
+				
+				if(dim==2 &&  show_axis_conter==1){
+					axesHelper.scale.z = 1e-23;
+					scene.add(axesHelper);
+				}
+				else if(dim==3 && show_axis_conter==1){
+					scene.add(axesHelper);
+				}
+				else if(dim==1 && show_axis_conter==1){
+					axesHelper.scale.z = 1e-23;
+					axesHelper.scale.x = 1e-23;
+					scene.add(axesHelper);;
+				}
+				else{
+					scene.remove(axesHelper);
+				}
+				
+				if (dim == 2 && show_conter==1){
+					document.getElementById("position_value_x").hidden = false;
+					document.getElementById("position_value_y").hidden = false;
+					document.getElementById("info_").hidden = false;
+					
+					if (parseInt(AnimationAction.time)>data_points.length-1){
+						document.getElementById("position_value_x").innerText = "X:"+(data_points[parseInt(data_points.length-1)][i_x]/4.0+0.5);
+						document.getElementById("position_value_y").innerText = "Y:"+(data_points[parseInt(data_points.length-1)][i_y]/4.0+0.5);
+						document.getElementById("info_").value = info_data[parseInt(data_points.length-1)];
+					}
+					else{
+						document.getElementById("position_value_x").innerText = "X:"+(data_points[parseInt(AnimationAction.time)][i_x]/4.0+0.5);
+						document.getElementById("position_value_y").innerText = "Y:"+(data_points[parseInt(AnimationAction.time)][i_y]/4.0+0.5);
+						document.getElementById("info_").value = info_data[parseInt(AnimationAction.time)];
+					}
+					
+					
+					if (vs_conter == 1){
+						document.getElementById("position_value_x_vs").hidden = false;
+						document.getElementById("position_value_y_vs").hidden = false;
+						document.getElementById("info_vs").hidden = false;
+						if (parseInt(AnimationAction2.time)>vs_points.length-1){	
+							document.getElementById("position_value_x_vs").innerText = "X:"+(vs_points[parseInt(vs_points.length-1)][i_x]/4.0+0.5);
+							document.getElementById("position_value_y_vs").innerText = "Y:"+(vs_points[parseInt(vs_points.length-1)][i_y]/4.0+0.5);		
+							document.getElementById("info_vs").value = info_data_vs[parseInt(vs_points.length-1)];
+						}
+						else{
+							document.getElementById("position_value_x_vs").innerText = "X:"+(vs_points[parseInt(AnimationAction2.time)][i_x]/4.0+0.5);
+							document.getElementById("position_value_y_vs").innerText = "Y:"+(vs_points[parseInt(AnimationAction2.time)][i_y]/4.0+0.5);
+							document.getElementById("info_vs").value = info_data_vs[parseInt(AnimationAction2.time)];
+						}
+					}
+				}
+				else if (dim == 1 &&show_conter==1){
+					document.getElementById("position_value_x").hidden = false;
+					document.getElementById("info_").hidden = false;
+					
+					if (parseInt(AnimationAction.time)>data_points.length-1){
+						document.getElementById("position_value_x").innerText = "X:"+(data_points[parseInt(data_points.length-1)][i_x]/4.0+0.5);
+						document.getElementById("info_").value = info_data[parseInt(data_points.length-1)];
+					}
+					else{
+						document.getElementById("position_value_x").innerText = "X:"+(data_points[parseInt(AnimationAction.time)][i_x]/4.0+0.5);
+						document.getElementById("info_").value = info_data[parseInt(AnimationAction.time)];
+					}
+					
+					
+					if (vs_conter == 1){
+						document.getElementById("position_value_x_vs").hidden = false;
+						document.getElementById("info_vs").hidden = false;
+						if (parseInt(AnimationAction2.time)>vs_points.length-1){	
+							document.getElementById("position_value_x_vs").innerText = "X:"+(vs_points[parseInt(vs_points.length-1)][i_x]/4.0+0.5);
+							document.getElementById("info_vs").value = info_data_vs[parseInt(vs_points.length-1)];
+						}
+						else{
+							document.getElementById("position_value_x_vs").innerText = "X:"+(vs_points[parseInt(AnimationAction2.time)][i_x]/4.0+0.5);
+							document.getElementById("info_vs").value = info_data_vs[parseInt(AnimationAction2.time)];
+						}
+					}
+				}
+				else if(dim == 3 &&show_conter==1){
+					document.getElementById("position_value_x").hidden = false;
+					document.getElementById("position_value_y").hidden = false;
+					document.getElementById("position_value_z").hidden = false;
+					
+					document.getElementById("info_").hidden = false;
+					
+					if (parseInt(AnimationAction.time)>data_points.length-1){
+						document.getElementById("position_value_x").innerText = "X:"+(data_points[parseInt(data_points.length-1)][i_x]/4.0+0.5);
+						document.getElementById("position_value_y").innerText = "Y:"+(data_points[parseInt(data_points.length-1)][i_y]/4.0+0.5);
+						document.getElementById("position_value_z").innerText = "Z:"+(data_points[parseInt(data_points.length-1)][i_z]/4.0+0.5);
+						
+						document.getElementById("info_").value = info_data[parseInt(data_points.length-1)];
+					}
+					else{
+						document.getElementById("position_value_x").innerText = "X:"+(data_points[parseInt(AnimationAction.time)][i_x]/4.0+0.5);
+						document.getElementById("position_value_y").innerText = "Y:"+(data_points[parseInt(AnimationAction.time)][i_y]/4.0+0.5);
+						document.getElementById("position_value_z").innerText = "Z:"+(data_points[parseInt(AnimationAction.time)][i_z]/4.0+0.5);
+						document.getElementById("info_").value = info_data[parseInt(AnimationAction.time)];
+					}
+					
+					
+					
+					if (vs_conter == 1){
+						document.getElementById("position_value_x_vs").hidden = false;
+						document.getElementById("position_value_y_vs").hidden = false;
+						document.getElementById("position_value_z_vs").hidden = false;
+						document.getElementById("info_vs").hidden = false;
+						
+						if (parseInt(AnimationAction2.time)>vs_points.length-1){	
+							document.getElementById("position_value_x_vs").innerText = "X:"+(vs_points[parseInt(vs_points.length-1)][i_x]/4.0+0.5);
+							document.getElementById("position_value_y_vs").innerText = "Y:"+(vs_points[parseInt(vs_points.length-1)][i_y]/4.0+0.5);
+							document.getElementById("position_value_z_vs").innerText = "Z:"+(vs_points[parseInt(vs_points.length-1)][i_z]/4.0+0.5);
+							document.getElementById("info_vs").value = info_data_vs[parseInt(vs_points.length-1)];
+						}
+						else{
+							document.getElementById("position_value_x_vs").innerText = "X:"+(vs_points[parseInt(AnimationAction2.time)][i_x]/4.0+0.5);
+							document.getElementById("position_value_y_vs").innerText = "Y:"+(vs_points[parseInt(AnimationAction2.time)][i_y]/4.0+0.5);
+							document.getElementById("position_value_z_vs").innerText = "Z:"+(vs_points[parseInt(AnimationAction2.time)][i_z]/4.0+0.5);
+							document.getElementById("info_vs").value = info_data_vs[parseInt(AnimationAction2.time)];
+						}
+						
+					}
+				}
+				else{
+					document.getElementById("position_value_x").hidden = true;
+					document.getElementById("position_value_y").hidden = true;
+					document.getElementById("position_value_z").hidden = true;
+					document.getElementById("info_").hidden = true;
+					if (vs_conter == 1){
+						document.getElementById("position_value_x_vs").hidden = true;
+						document.getElementById("position_value_y_vs").hidden = true;
+						document.getElementById("position_value_z_vs").hidden = true;
+						document.getElementById("info_vs").hidden = true;
+					}
+				}
+				
+			}
+			//console.log(data_points[98][0]);
+			//slider.disabled = false;
+		}
+		
+		render();
+		
+		
+		function stop_(){
+		
+			a = 0;
+			AnimationAction.reset ();
+			if (vs_conter == 1){
+				AnimationAction2.reset ();
+			}
+			
+			document.getElementById("play_p").hidden=true;
+			document.getElementById("play_b").hidden=false;
+		}
+		function reset(){
+			location.reload();
+			
+		}
+		function run(){
+			
+			if (a == 0){
+				a = 1;
+				document.getElementById("play_b").hidden=true;
+				document.getElementById("play_p").hidden=false;
+			}
+			else{
+				a = 0;
+				document.getElementById("play_p").hidden=true;
+				document.getElementById("play_b").hidden=false;
+			}
+		}
+		
+		function go_to(){
+			
+			AnimationAction.reset ();
+			AnimationAction.time = parseInt(slider.value);
+			AnimationAction.play();
+			if (vs_conter == 1){
+				AnimationAction2.reset ();
+				AnimationAction2.time = parseInt(slider.value);
+				AnimationAction2.play();
+			}
+		}
+		function dea(){
+			if (AnimationAction.timeScale == 1){
+				AnimationAction.timeScale = 1;
+				if (vs_conter == 1){
+					AnimationAction2.timeScale = 1;
+				}
+			}
+			else{
+				AnimationAction.timeScale /= 2;
+				if (vs_conter == 1){
+					AnimationAction2.timeScale /= 2;
+				}
+			}
+			show_speed.innerText = AnimationAction.timeScale;
+		}
+		function acc(){
+			if (AnimationAction.timeScale == 1024){
+				AnimationAction.timeScale = 1024;
+				if (vs_conter == 1){
+					AnimationAction2.timeScale = 1024;
+				}
+			}
+			else{
+				AnimationAction.timeScale *= 2;
+				if (vs_conter == 1){
+					AnimationAction2.timeScale *= 2;
+				}
+			}
+			show_speed.innerText = AnimationAction.timeScale;
+		}
+		
+		var show_junp_value = 0;
+		function jump(){
+			if (show_junp_value == 0){
+				show_junp_value = 1;
+				document.getElementById("jump_value").hidden = false;
+				
+			}
+			else{
+				show_junp_value = 0;
+				document.getElementById("jump_value").hidden = true;
+
+			}
+		}
+		
+		var dot_conter = 0;
+		function show_dot(){
+			if (dot_conter==0){
+			
+				
+				dot_conter = 1;
+				
+				
+			}
+			else{
+				
+				dot_conter = 0;
+			}
+		
+		}
+		function foot(){
+			if (b==0){
+			
+				scene.add( mes );
+				if (vs_conter == 1){
+					scene.add( mes2 );
+				}
+				b = 1;
+				
+				
+			}
+			else{
+				scene.remove( mes );
+				if (vs_conter == 1){
+					scene.remove( mes2 );
+				}
+				b = 0;
+			}
+		
+		}
+		
+		
+		function photo(){
+		
+			/*const el = document.getElementById('all_page');
+			const config = {
+			  quality: 1,
+			  style: { "filter": "grayscale(100%)" }
+			};
+			domtoimage.toJpeg(el, { quality: 0.95 })
+				.then(function (dataUrl) {
+				var link = document.createElement('a');
+				link.download = 'my-image-name.jpeg';
+				link.href = dataUrl;
+				link.click();
+			});*/
+
+
+			/*html2canvas(document.getElementById('all_page'), {
+				//设置可以素材可以跨域，移动端不兼容
+				//allowTaint:true,
+				//useCORS: true,
+				//foreignObjectRendering: true
+			}).then(function(canvas) {
+				//document.body.appendChild(canvas);
+				
+				var a = document.createElement('a');
+				a.href = canvas.toDataURL("image/jpeg");
+				a.download = 'image.jpg';
+
+				a.click();
+			});*/
+			
+			const el = document.getElementById('all_page');
+			
+			domtoimage.toPng(el,).then(function(dataUrl){
+			
+				const link = document.createElement('a');
+				const filename = 'image.png';
+				link.download = filename;
+				link.href = dataUrl;
+				link.click();
+			});
+			
+			
+			
+			// 下載圖片
+		}
+		var video_page = document.getElementById('all_page');
+		
+		var record_rtc = new RecordRTC(renderer.domElement, {
+			type: 'canvas',
+			mimeType: 'video/webm;codecs=vp9',
+			recorderType: CanvasRecorder,
+			getNativeBlob: true
+		});
+		
+		var video_conter = 0;
+		var startTime;
+		
+		function video(){
+			if (video_conter == 0){  //錄影
+				document.getElementById("video").hidden = true;
+				document.getElementById("rec").hidden = false;
+				video_conter = 1;
+				startTime = Date.now();
+				record_rtc.startRecording();
+			}
+			else{		//停止錄影
+				document.getElementById("video").hidden = false;
+				document.getElementById("rec").hidden = true;
+				
+				record_rtc.stopRecording(function (stream) {
+				var duration = Date.now() - startTime;
+				
+				var blob = record_rtc.getBlob();
+				ysFixWebmDuration(blob, duration, function(fixedBlob) {
+					let downloadLink = document.createElement('a');
+					downloadLink.href = URL.createObjectURL(fixedBlob);
+					downloadLink.download = "video.mp4";
+					downloadLink.click();
+					/*record_rtc.screen.stop();
+					record_rtc.destroy();*/
+				});
+				// document.getElementById('preview-video').srcObject = null;
+				
+
+
+				// window.open(URL.createObjectURL(blob));
+			});
+				/*record_rtc.stopRecording(function (stream) {
+				
+				var duration = Date.now() - startTime;
+				//console.log(duration);
+				var blob = record_rtc.getBlob();
+				ysFixWebmDuration(blob, duration, function(fixedBlob) {
+					let downloadLink = document.createElement('a');
+					downloadLink.href = URL.createObjectURL(fixedBlob);
+					downloadLink.download = "video.mp4";
+					downloadLink.click();
+					//record_rtc.screen.stop();
+					//record_rtc.destroy();
+				});
+				// document.getElementById('preview-video').srcObject = null;
+				
+
+
+				// window.open(URL.createObjectURL(blob));
+				});*/
+			}
+			
+		}
+		
+		var show_conter = 0;
+		function show_point(){
+			if(show_conter == 0){
+				show_conter = 1;
+				
+			}
+			else{
+				show_conter = 0;
+				
+			}
+			
+		}
+		var show_axis_conter = 0;
+		function show_axis(){
+			if(show_axis_conter == 0){
+				show_axis_conter = 1;
+				//scene.add(axesHelper);
+			}
+			else{
+				show_axis_conter = 0;
+				//scene.remove(axesHelper);
+			}
+			
+		}
+		var show_grid_conter = 0;
+		function show_grid(){
+			if(show_grid_conter == 0){
+				show_grid_conter = 1;
+				//scene.add(axesHelper);
+			}
+			else{
+				show_grid_conter = 0;
+				//scene.remove(axesHelper);
+			}
+			
+		}
+		
+		var show_d = 0;
+		
+		/*function change_d(){
+			if (document.getElementById("3D").hidden == true){
+				document.getElementById("2D").hidden = true;
+				document.getElementById("3D").hidden = false;
+				show_d = 2;
+				sessionStorage.clear();
+				var data3 = {'dix':show_d,'point':JSON.parse(savedData)['point'],'file_name':JSON.parse(savedData)['file_name'],
+						 "boolen":false,
+						 'max_dim':JSON.parse(savedData)['max_dim'],"x":JSON.parse(savedData)['x'],
+						 "y":JSON.parse(savedData)['y'],
+						 "z":JSON.parse(savedData)['z'],
+						 "vs_point":JSON.parse(savedData)['vs_point'],
+						 "vs_c":JSON.parse(savedData)['vs_c'],
+						 "vs_filename":JSON.parse(savedData)['vs_filename'],
+						"info_data":JSON.parse(savedData)['info_data'],"vs_info_data":JSON.parse(savedData)['vs_info_data']
+						};
+				
+				sessionStorage.setItem('data', JSON.stringify(data3));
+				location.reload();
+				
+			}
+			else if (document.getElementById("2D").hidden == true){
+				document.getElementById("2D").hidden = false;
+				document.getElementById("3D").hidden = true;
+				show_d = 3;
+				sessionStorage.clear();
+				var data3 = {'dix':show_d,'point':JSON.parse(savedData)['point'],'file_name':JSON.parse(savedData)['file_name'],
+						 "boolen":false,
+						 'max_dim':JSON.parse(savedData)['max_dim'],"x":JSON.parse(savedData)['x'],
+						 "y":JSON.parse(savedData)['y'],
+						 "z":JSON.parse(savedData)['z'],
+						 "vs_point":JSON.parse(savedData)['vs_point'],
+						 "vs_c":JSON.parse(savedData)['vs_c'],
+						 "vs_filename":JSON.parse(savedData)['vs_filename'],
+						"info_data":JSON.parse(savedData)['info_data'],"vs_info_data":JSON.parse(savedData)['vs_info_data']
+						};
+				
+				sessionStorage.setItem('data', JSON.stringify(data3));
+				location.reload();
+			}
+		}*/
+		
+		function open_vs(){
+			if (document.getElementById("vs_b").hidden == true){
+				vs_conter = 1;
+				document.getElementById("vs").hidden = true;
+				document.getElementById("vs_b").hidden = false;
+				scene.add( sphere2 );
+				if(b==1){
+					scene.add( mes2 );
+				}
+				if (show_conter == 1){
+					document.getElementById("position_value_x_vs").hidden = false;
+					document.getElementById("position_value_y_vs").hidden = false;
+					document.getElementById("position_value_z_vs").hidden = false;
+				}
+				
+				sessionStorage.clear();
+
+				var data3 = {'dix':JSON.parse(savedData)['dix'],'point':JSON.parse(savedData)['point'],
+							'file_name':JSON.parse(savedData)['file_name'],"boolen":false,"max_dim":JSON.parse(savedData)['max_dim'],
+							"x":JSON.parse(savedData)['x'],"y":JSON.parse(savedData)['y'],
+							"z":JSON.parse(savedData)['z'],"vs_point":JSON.parse(savedData)['vs_point'],"vs_c":vs_conter,"vs_filename":JSON.parse(savedData)['vs_filename'],
+							"info_data":JSON.parse(savedData)['info_data'],"vs_info_data":JSON.parse(savedData)['vs_info_data']};
+									   
+								//console.log(files[0]["name"]);
+				sessionStorage.setItem('data', JSON.stringify(data3));
+				location.reload();
+			}
+			else if(document.getElementById("vs").hidden == true){
+				vs_conter = 0;
+				document.getElementById("vs_b").hidden = true;
+				document.getElementById("vs").hidden = false;
+				scene.remove( sphere2 );
+				scene.remove( mes2 );
+				
+				document.getElementById("position_value_x_vs").hidden = true;
+				document.getElementById("position_value_y_vs").hidden = true;
+				document.getElementById("position_value_z_vs").hidden = true;
+				
+				sessionStorage.clear();
+
+				var data3 = {'dix':JSON.parse(savedData)['dix'],'point':JSON.parse(savedData)['point'],
+							'file_name':JSON.parse(savedData)['file_name'],"boolen":false,"max_dim":JSON.parse(savedData)['max_dim'],
+							"x":JSON.parse(savedData)['x'],"y":JSON.parse(savedData)['y'],
+							"z":JSON.parse(savedData)['z'],"vs_point":JSON.parse(savedData)['vs_point'],"vs_c":vs_conter,"vs_filename":JSON.parse(savedData)['vs_filename'],
+							"info_data":JSON.parse(savedData)['info_data'],"vs_info_data":JSON.parse(savedData)['vs_info_data']};
+									   
+								//console.log(files[0]["name"]);
+				sessionStorage.setItem('data', JSON.stringify(data3));
+				location.reload();
+			}
+		}
+		
+		document.getElementById("input_x").onclick = function(){
+			if(document.getElementById("x_value").hidden == true){
+				document.getElementById("x_value").hidden = false;
+			}
+			else{
+				document.getElementById("x_value").hidden = true;
+			}
+		};
+		document.getElementById("input_y").onclick = function(){
+			if(document.getElementById("y_value").hidden == true){
+				document.getElementById("y_value").hidden = false;
+			}
+			else{
+				document.getElementById("y_value").hidden = true;
+			}
+		};
+		document.getElementById("input_z").onclick = function(){
+			if(document.getElementById("z_value").hidden == true){
+				document.getElementById("z_value").hidden = false;
+			}
+			else{
+				document.getElementById("z_value").hidden = true;
+			}
+		};
+		
+		
+		document.getElementById("foot_point").onclick = show_dot;
+		document.getElementById("vs").onclick = open_vs;
+		document.getElementById("vs_b").onclick = open_vs; 
+		document.getElementById("2D").onclick = function(){
+			document.getElementById("2D").hidden = true;
+			document.getElementById("3D").hidden = false;
+			document.getElementById("1D").hidden = false;
+			show_d = 2;
+			sessionStorage.clear();
+			var data3 = {'dix':show_d,'point':JSON.parse(savedData)['point'],'file_name':JSON.parse(savedData)['file_name'],
+				 "boolen":false,
+				 'max_dim':JSON.parse(savedData)['max_dim'],"x":JSON.parse(savedData)['x'],
+				"y":JSON.parse(savedData)['y'],
+				 "z":JSON.parse(savedData)['z'],
+				 "vs_point":JSON.parse(savedData)['vs_point'],
+				 "vs_c":JSON.parse(savedData)['vs_c'],
+				 "vs_filename":JSON.parse(savedData)['vs_filename'],
+				"info_data":JSON.parse(savedData)['info_data'],"vs_info_data":JSON.parse(savedData)['vs_info_data']
+				};
+				
+			sessionStorage.setItem('data', JSON.stringify(data3));
+			location.reload();
+		
+		};
+		
+		document.getElementById("3D").onclick = function(){
+			document.getElementById("2D").hidden = false;
+			document.getElementById("3D").hidden = true;
+			document.getElementById("1D").hidden = false;
+			show_d = 3;
+			sessionStorage.clear();
+			var data3 = {'dix':show_d,'point':JSON.parse(savedData)['point'],'file_name':JSON.parse(savedData)['file_name'],
+				 "boolen":false,
+				 'max_dim':JSON.parse(savedData)['max_dim'],"x":JSON.parse(savedData)['x'],
+				 "y":JSON.parse(savedData)['y'],
+				 "z":JSON.parse(savedData)['z'],
+				 "vs_point":JSON.parse(savedData)['vs_point'],
+				 "vs_c":JSON.parse(savedData)['vs_c'],
+				 "vs_filename":JSON.parse(savedData)['vs_filename'],
+				"info_data":JSON.parse(savedData)['info_data'],"vs_info_data":JSON.parse(savedData)['vs_info_data']
+				};
+				
+			sessionStorage.setItem('data', JSON.stringify(data3));
+			location.reload();
+		
+		};
+		document.getElementById("1D").onclick = function(){
+			document.getElementById("2D").hidden = false;
+			document.getElementById("3D").hidden = false;
+			document.getElementById("1D").hidden = true;
+			show_d = 1;
+			sessionStorage.clear();
+			var data3 = {'dix':show_d,'point':JSON.parse(savedData)['point'],'file_name':JSON.parse(savedData)['file_name'],
+				 "boolen":false,
+				 'max_dim':JSON.parse(savedData)['max_dim'],"x":JSON.parse(savedData)['x'],
+				 "y":JSON.parse(savedData)['y'],
+				 "z":JSON.parse(savedData)['z'],
+				 "vs_point":JSON.parse(savedData)['vs_point'],
+				 "vs_c":JSON.parse(savedData)['vs_c'],
+				 "vs_filename":JSON.parse(savedData)['vs_filename'],
+				"info_data":JSON.parse(savedData)['info_data'],"vs_info_data":JSON.parse(savedData)['vs_info_data']
+				};
+				
+			sessionStorage.setItem('data', JSON.stringify(data3));
+			location.reload();
+		
+		};
+		
+		document.getElementById("reset_b").onclick = reset;
+		document.getElementById("play_b").onclick = run;
+		document.getElementById("play_p").onclick = run;
+		document.getElementById("dea").onclick = dea;
+		document.getElementById("acc").onclick = acc;
+		document.getElementById("jump").onclick = jump;
+		document.getElementById("foot").onclick = foot;
+		
+		document.getElementById("photo").onclick = photo;
+		document.getElementById("video").onclick = video;
+		document.getElementById("rec").onclick = video;
+		document.getElementById("show_axis").onclick = show_axis;
+		document.getElementById("show_grid").onclick = show_grid;
+		document.getElementById("show_point").onclick = show_point;
+		document.getElementById("stop_b").onclick = stop_;
+		
+		
+		
+		document.getElementById("jump_value").onkeydown = function(e){
+			if (e.keyCode == 13){
+				
+				AnimationAction.reset ();
+				if (parseInt(document.getElementById("jump_value").value) >parseInt(slider.max)){
+					AnimationAction.time = parseInt(slider.max);
+					if (vs_conter == 1){
+						AnimationAction2.time = parseInt(slider.max);
+					}
+				}
+				else if(parseInt(document.getElementById("jump_value").value) < 1){
+					AnimationAction.time = parseInt(0);
+					if (vs_conter == 1){
+						AnimationAction2.time = parseInt(0);
+					}
+				}
+				else{
+					AnimationAction.time = parseInt(document.getElementById("jump_value").value-1);
+					if (vs_conter == 1){
+						AnimationAction2.time = parseInt(document.getElementById("jump_value").value-1);
+					}
+				}
+				
+				slider.value = AnimationAction.time;
+				AnimationAction.play();
+				if (vs_conter == 1){
+					AnimationAction2.time = AnimationAction.time;
+					AnimationAction2.play();
+				}
+			}
+		};
+		
+		document.getElementById("all_page").ondragover = function(e){
+			document.getElementById("all_page").style.border = "2px red solid";
+			e.stopPropagation();
+            e.preventDefault();
+		};
+		
+		document.getElementById("all_page").ondragleave = function(e){
+			document.getElementById("all_page").style.border = "";
+			e.stopPropagation();
+            e.preventDefault();
+		};
+		
+		document.getElementById("example").onclick = function(e){
+			//var file = new File("example_5維.txt");
+			
+			var folderPath = "https://110321520.github.io/hypercube%20tool/example.txt"; // 替换为您要读取的文件夹路径
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", folderPath);
+			xhr.responseType = "blob";
+			
+			
+			xhr.onload = function() {
+				
+				var files = xhr.response;
+				var reader = new FileReader();
+				
+				
+				reader.readAsText(files);
+				reader.onload = function(e) {
+					bfile = e.target.result
+					var data1 = bfile.split('\r\n');
+					data_point = [];
+					info_data = [];
+					for (var i=0;i<data1.length;i++){
+						var test_data = data1[i].split(',');
+						var d_point = test_data[0].split(' ');
+									
+						let test_info = "";
+						for(var j=1;j<test_data.length;j++){
+							test_info += test_data[j];
+							if (j != test_data.length-1){
+								test_info += '\r\n';
+							}
+						}
+									
+						info_data.push(test_info);
+									
+						if (d_point.length > 2){
+							data_dim = 3;
+						}
+						else{
+							data_dim = 2;
+						}
+						max_dim = d_point.length;
+						var d_point1 = [];
+						for (var j=0;j<d_point.length;j++){
+							d_point1.push((parseFloat(d_point[j])-0.5)*4.0);
+						}
+										
+						data_point.push(d_point1);
+					}
+						console.log(info_data);
+						console.log(data_point);
+					sessionStorage.clear();
+
+					var data3 = {'dix':data_dim,'point':data_point,'file_name':"example.txt","boolen":false,"max_dim":max_dim,"x":0,"y":1,"z":2,"vs_point":compare_point,"vs_c":vs_conter,"vs_filename":"",
+									 "info_data":info_data,"vs_info_data":info_data_vs};
+										   
+									//console.log(files[0]["name"]);
+					sessionStorage.setItem('data', JSON.stringify(data3));
+								
+					location.reload();
+				} 
+			}
+			xhr.send();
+			
+			
+			
+			/*reader.onload = function(e) {  
+				
+				document.getElementById("input_x").hidden = true;
+				document.getElementById("input_y").hidden = true;
+				document.getElementById("input_z").hidden = true;
+				bfile = e.target.result 
+				var data1 = bfile.split('\r\n');
+				data_point = [];
+				info_data = [];
+				for (var i=0;i<data1.length;i++){
+					var test_data = data1[i].split(',');
+					var d_point = test_data[0].split(' ');
+								
+					let test_info = "";
+					for(var j=1;j<test_data.length;j++){
+						test_info += test_data[j];
+						if (j != test_data.length-1){
+							test_info += '\r\n';
+						}
+					}
+								
+					info_data.push(test_info);
+								
+					if (d_point.length > 2){
+						data_dim = 3;
+					}
+					else{
+						data_dim = 2;
+					}
+					max_dim = d_point.length;
+					var d_point1 = [];
+					for (var j=0;j<d_point.length;j++){
+						d_point1.push((parseFloat(d_point[j])-0.5)*4.0);
+					}
+									
+					data_point.push(d_point1);
+				}
+					console.log(info_data);
+					console.log(data_point);
+				sessionStorage.clear();
+
+				var data3 = {'dix':data_dim,'point':data_point,'file_name':files[0]["name"],"boolen":false,"max_dim":max_dim,"x":0,"y":1,"z":2,"vs_point":compare_point,"vs_c":vs_conter,"vs_filename":"",
+								 "info_data":info_data,"vs_info_data":info_data_vs};
+									   
+								//console.log(files[0]["name"]);
+				sessionStorage.setItem('data', JSON.stringify(data3));
+							
+				location.reload();
+				
+						
+			}*/
+		};
+		
+		var bfile;
+		var data_point = [];
+		var data_dim = 3;
+		var max_dim = 0;
+		var compare_point = [[0,0,0],[0,0,0]];
+		
+		function load_file(){
+			let input = document.createElement('input');
+			input.type = 'file';
+			input.accept = "epin";
+			input.onchange = _ => {
+				// you can use this method to get file and perform respective operations
+				let files =   Array.from(input.files);
+				if (files[0].type == "text/plain"){
+					file_name.value = " File：" + files[0]["name"];
+				
+					var f = files[0];
+					var reader = new FileReader();
+						
+						
+					reader.onload = function(e) {  
+						if (vs_conter == 1){
+							bfile = e.target.result 
+							var data1 = bfile.split('\r\n');
+							info_data_vs = [];
+							compare_point = [];
+							for (var i=0;i<data1.length;i++){
+								var test_data = data1[i].split(',');
+								var d_point = test_data[0].split(' ');
+								
+								let test_info = "";
+								for(var j=1;j<test_data.length;j++){
+									test_info += test_data[j];
+									if (j != test_data.length-1){
+										test_info += '\r\n';
+									}
+								}
+								
+								info_data_vs.push(test_info);
+								
+								if (d_point.length > 2){
+									data_dim = 3;
+								}
+								else{
+									data_dim = 2;
+								}
+								max_dim = d_point.length;
+								var d_point1 = [];
+								for (var j=0;j<d_point.length;j++){
+									d_point1.push((parseFloat(d_point[j])-0.5)*4.0);
+								}
+								
+								//console.log(d_point1);
+								compare_point.push(d_point1);
+							}
+							
+							sessionStorage.clear();
+
+							var data3 = {'dix':JSON.parse(savedData)['dix'],'point':JSON.parse(savedData)['point'],
+										 'file_name':JSON.parse(savedData)['file_name'],"boolen":false,"max_dim":JSON.parse(savedData)['max_dim'],
+										 "x":JSON.parse(savedData)['x'],"y":JSON.parse(savedData)['y'],
+										 "z":JSON.parse(savedData)['z'],"vs_point":compare_point,"vs_c":vs_conter,"vs_filename":files[0]["name"],
+										 "info_data":JSON.parse(savedData)['info_data'],"vs_info_data":info_data_vs};
+									   
+								//console.log(files[0]["name"]);
+							sessionStorage.setItem('data', JSON.stringify(data3));
+							
+							location.reload();
+						}
+						else if(vs_conter == 0){
+							document.getElementById("input_x").hidden = true;
+							document.getElementById("input_y").hidden = true;
+							document.getElementById("input_z").hidden = true;
+							bfile = e.target.result 
+							var data1 = bfile.split('\r\n');
+							data_point = [];
+							info_data = [];
+							for (var i=0;i<data1.length;i++){
+								var test_data = data1[i].split(',');
+								var d_point = test_data[0].split(' ');
+								
+								let test_info = "";
+								for(var j=1;j<test_data.length;j++){
+									test_info += test_data[j];
+									if (j != test_data.length-1){
+										test_info += '\r\n';
+									}
+								}
+								
+								info_data.push(test_info);
+								
+								if (d_point.length > 2){
+									data_dim = 3;
+								}
+								else{
+									data_dim = 2;
+								}
+								max_dim = d_point.length;
+								var d_point1 = [];
+								for (var j=0;j<d_point.length;j++){
+									d_point1.push((parseFloat(d_point[j])-0.5)*4.0);
+								}
+									
+								data_point.push(d_point1);
+							}
+								console.log(info_data);
+								console.log(data_point);
+							sessionStorage.clear();
+
+							var data3 = {'dix':data_dim,'point':data_point,'file_name':files[0]["name"],"boolen":false,"max_dim":max_dim,"x":0,"y":1,"z":2,"vs_point":compare_point,"vs_c":vs_conter,"vs_filename":"",
+										 "info_data":info_data,"vs_info_data":info_data_vs};
+									   
+								//console.log(files[0]["name"]);
+							sessionStorage.setItem('data', JSON.stringify(data3));
+							
+							location.reload();
+						}
+						
+					}
+
+					reader.readAsText(f);
+				}
+				else{
+					window.alert("檔案類型錯誤，本系統只接受文字檔");
+				}
+				
+			};
+			input.click();
+		}
+		
+		document.getElementById("all_page").ondrop = function(e){
+			e.stopPropagation();
+            e.preventDefault();
+			document.getElementById("all_page").style.border = "";
+			
+			var files = e.dataTransfer.files;
+			
+			if (files[0].type == "text/plain"){
+				file_name.value = " File：" + files[0]["name"];
+			
+				var f = files[0];
+				var reader = new FileReader();
+					
+					
+				reader.onload = function(e) {  
+					if (vs_conter == 1){
+						bfile = e.target.result 
+						var data1 = bfile.split('\r\n');
+						info_data_vs = [];
+						compare_point = [];
+						for (var i=0;i<data1.length;i++){
+							var test_data = data1[i].split(',');
+							var d_point = test_data[0].split(' ');
+								
+							let test_info = "";
+							for(var j=1;j<test_data.length;j++){
+								test_info += test_data[j];
+								if (j != test_data.length-1){
+									test_info += '\r\n';
+								}
+							}
+								
+							info_data_vs.push(test_info);
+								
+							if (d_point.length > 2){
+								data_dim = 3;
+							}
+							else{
+								data_dim = 2;
+							}
+							max_dim = d_point.length;
+							var d_point1 = [];
+							for (var j=0;j<d_point.length;j++){
+								d_point1.push((parseFloat(d_point[j])-0.5)*4.0);
+							}
+								
+								//console.log(d_point1);
+							compare_point.push(d_point1);
+						}
+							
+						sessionStorage.clear();
+
+							var data3 = {'dix':JSON.parse(savedData)['dix'],'point':JSON.parse(savedData)['point'],
+										 'file_name':JSON.parse(savedData)['file_name'],"boolen":false,"max_dim":JSON.parse(savedData)['max_dim'],
+										 "x":JSON.parse(savedData)['x'],"y":JSON.parse(savedData)['y'],
+										 "z":JSON.parse(savedData)['z'],"vs_point":compare_point,"vs_c":vs_conter,"vs_filename":files[0]["name"],
+										 "info_data":JSON.parse(savedData)['info_data'],"vs_info_data":info_data_vs};
+									   
+								//console.log(files[0]["name"]);
+							sessionStorage.setItem('data', JSON.stringify(data3));
+							
+							location.reload();
+						}
+						else if(vs_conter == 0){
+							document.getElementById("input_x").hidden = true;
+							document.getElementById("input_y").hidden = true;
+							document.getElementById("input_z").hidden = true;
+							bfile = e.target.result 
+							var data1 = bfile.split('\r\n');
+							data_point = [];
+							info_data = [];
+							for (var i=0;i<data1.length;i++){
+								var test_data = data1[i].split(',');
+								var d_point = test_data[0].split(' ');
+								
+								let test_info = "";
+								for(var j=1;j<test_data.length;j++){
+									test_info += test_data[j];
+									if (j != test_data.length-1){
+										test_info += '\r\n';
+									}
+								}
+								
+								info_data.push(test_info);
+								
+								if (d_point.length > 2){
+									data_dim = 3;
+								}
+								else{
+									data_dim = 2;
+								}
+								max_dim = d_point.length;
+								var d_point1 = [];
+								for (var j=0;j<d_point.length;j++){
+									d_point1.push((parseFloat(d_point[j])-0.5)*4.0);
+								}
+									
+								data_point.push(d_point1);
+							}
+								console.log(info_data);
+								console.log(data_point);
+							sessionStorage.clear();
+
+							var data3 = {'dix':data_dim,'point':data_point,'file_name':files[0]["name"],"boolen":false,"max_dim":max_dim,"x":0,"y":1,"z":2,"vs_point":compare_point,"vs_c":vs_conter,"vs_filename":"",
+										 "info_data":info_data,"vs_info_data":info_data_vs};
+									   
+								//console.log(files[0]["name"]);
+							sessionStorage.setItem('data', JSON.stringify(data3));
+							
+							location.reload();
+						}
+						
+					}
+
+				reader.readAsText(f);
+			}
+			else{
+				window.alert("檔案類型錯誤，本系統只接受文字檔");
+			}
+			
+		};
+		document.getElementById("x_value").onchange = function(e){
+			//var data3 = {'dix':data_dim,'point':data_point,'file_name':file_name.value,"boolen":false,"max_dim":max_dim,"x":document.getElementById("x_value").value,"y":document.getElementById("y_value").value,"z":document.getElementById("z_value").value};
+			//console.log(i_x);
+
+			var data3 = {'dix':JSON.parse(savedData)['dix'],'point':JSON.parse(savedData)['point'],'file_name':JSON.parse(savedData)['file_name'],
+						 "boolen":false,
+						 'max_dim':JSON.parse(savedData)['max_dim'],"x":document.getElementById("x_value").value-1,
+						 "y":JSON.parse(savedData)['y'],
+						 "z":JSON.parse(savedData)['z'],
+						 "vs_point":JSON.parse(savedData)['vs_point'],
+						 "vs_c":JSON.parse(savedData)['vs_c'],
+						 "vs_filename":JSON.parse(savedData)['vs_filename'],
+						"info_data":JSON.parse(savedData)['info_data'],"vs_info_data":JSON.parse(savedData)['vs_info_data']
+						};
+			sessionStorage.clear();
+			sessionStorage.setItem('data', JSON.stringify(data3));
+			location.reload();
+		}
+		
+		document.getElementById("y_value").onchange = function(e){
+			//var data3 = {'dix':data_dim,'point':data_point,'file_name':file_name.value,"boolen":false,"max_dim":max_dim,"x":document.getElementById("x_value").value,"y":document.getElementById("y_value").value,"z":document.getElementById("z_value").value};
+			//console.log(i_x);
+
+			var data3 = {'dix':JSON.parse(savedData)['dix'],'point':JSON.parse(savedData)['point'],'file_name':JSON.parse(savedData)['file_name'],
+						 "boolen":false,
+						 'max_dim':JSON.parse(savedData)['max_dim'],"x":JSON.parse(savedData)['x'],
+						 "y":document.getElementById("y_value").value-1,
+						 "z":JSON.parse(savedData)['z'],
+						 "vs_point":JSON.parse(savedData)['vs_point'],
+						 "vs_c":JSON.parse(savedData)['vs_c'],
+						 "vs_filename":JSON.parse(savedData)['vs_filename'],
+						"info_data":JSON.parse(savedData)['info_data'],"vs_info_data":JSON.parse(savedData)['vs_info_data']
+						};
+			sessionStorage.clear();
+			sessionStorage.setItem('data', JSON.stringify(data3));
+			location.reload();
+		}
+		
+		document.getElementById("z_value").onchange = function(e){
+			//var data3 = {'dix':data_dim,'point':data_point,'file_name':file_name.value,"boolen":false,"max_dim":max_dim,"x":document.getElementById("x_value").value,"y":document.getElementById("y_value").value,"z":document.getElementById("z_value").value};
+			//console.log(i_x);
+			
+			var data3 = {'dix':JSON.parse(savedData)['dix'],'point':JSON.parse(savedData)['point'],'file_name':JSON.parse(savedData)['file_name'],
+						 "boolen":false,
+						 'max_dim':JSON.parse(savedData)['max_dim'],"x":JSON.parse(savedData)['x'],
+						 "y":JSON.parse(savedData)['y'],
+						 "z":document.getElementById("z_value").value-1,
+						 "vs_point":JSON.parse(savedData)['vs_point'],
+						 "vs_c":JSON.parse(savedData)['vs_c'],
+						 "vs_filename":JSON.parse(savedData)['vs_filename'],
+						"info_data":JSON.parse(savedData)['info_data'],"vs_info_data":JSON.parse(savedData)['vs_info_data']
+						};
+			sessionStorage.clear();
+			sessionStorage.setItem('data', JSON.stringify(data3));
+			location.reload();
+		}
+		
+		document.getElementById("s_value").onkeydown = function(e){
+			
+			if (e.keyCode == 39){
+				AnimationAction.timeScale = 1;
+				show_speed.innerText = AnimationAction.timeScale;
+			}
+			else if(e.keyCode == 37){
+				AnimationAction.timeScale = 1;
+				show_speed.innerText = AnimationAction.timeScale;
+			}
+		}
+		
+		document.getElementById("file").onclick = load_file;
+		
+		slider.oninput = go_to;
+		//animate();
+		container.append(renderer.domElement);
+		
+ 
+		/*ctx.beginPath();
+//我們用moveTo(x,y)來指定線的起點座標
+		ctx.moveTo(50,50)
+		//之後使用lineTo(x,y)來指定與前一個座標相連的點
+		ctx.lineTo(100,50)
+		//用stroke()來繪製相連點的線
+		ctx.stroke()*/
+	</script>
+</html>

@@ -1,0 +1,478 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<script src="js/Chart.min.js"></script>
+		<script type="text/javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+		</script>
+		<link rel="stylesheet" href="bootstrap-4.4.1-dist\css\bootstrap.min.css">
+		<link rel="stylesheet" href="./drag-test.css">
+		<script src="js/drag-test.js" defer></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<style>
+			.top-nav{
+				display:flex;
+				flex-wrap:wrap;
+				gap:6px;
+				align-items:center;
+				padding-bottom:4px;
+			}
+			.top-nav .btn{
+				white-space:nowrap;
+				flex:0 0 auto;
+			}
+			.action-row{
+				display:flex;
+				gap:28px;
+				align-items:flex-start;
+				flex-wrap:wrap;
+			}
+			.action-buttons{
+				display:flex;
+				gap:8px;
+				flex-wrap:nowrap;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div class="container mt-3 " >
+			<div class="top-nav">
+				<button class="btn btn-success btn-sm" style onclick="location.href='index.html'">Quantum Circuit</button>
+				<button class="btn btn-success btn-sm" style onclick="location.href='ES.html'">Entanglement Swapping</button>
+				<button class="btn btn-success btn-sm" style onclick="location.href='2ES.html'">Two Bell Entanglement Swapping</button>
+				<button class="btn btn-success btn-sm" style onclick="location.href='3BellES.html'">Three Bell Entanglement Swapping</button>
+				<button class="btn btn-success btn-sm" style onclick="location.href='3ES3.html'">Three GHZ Entanglement Swapping</button>
+				<button class="btn btn-success btn-sm" style onclick="location.href='../hypercube tool/index.html'">Hypercube Tool</button>
+			</div>
+			
+			<div class="row mt-2 ">
+				<table class="table text-center " role="alert" >
+					<thead class="table-danger" >
+						<tr>
+							<th scope="col"> Input </th>
+							<th scope="col"> State </th>
+							<th scope="col"> Input </th>
+							<th scope="col"> State </th>
+						</tr>
+					</thead>
+					
+					<tbody>
+						<tr>
+							<th scope="col" >$$\phi^+ \text{ (00)}$$</th>
+							<th scope="col" >`1/\sqrt{2}(|00〉＋|11〉)`</th>
+							<th scope="col">$$\phi^- \text{ (11)}$$</th>
+							<th scope="col">`1/\sqrt{2}(|00〉－|11〉)`</th>
+						</tr>
+						<tr>
+							<th scope="col">$$\psi^+ \text{ (01)}$$</th>
+							<th scope="col">`1/\sqrt{2}(|01〉＋|10〉)`</th>
+							<th scope="col">$$\psi^- \text{ (10)}$$</th>
+							<th scope="col">`1/\sqrt{2}(|01〉－|10〉)`</th>
+						</tr>
+						
+					</tbody>
+				</table>
+			</div>
+			<div style="height:10px;">
+			
+			</div>
+			<div class="row mt-5">
+				<div class="input-group">
+				  <span class="input-group-text alert-primary">Input two Bell states A and B</span>
+				  <input id = "input_A" type="text" aria-label="First name" class="form-control"  placeholder="A = 00">
+				  <input id = "input_B" type="text" aria-label="Last name" class="form-control"  placeholder="B = 00">
+				  <input id = "input_C" type="text" aria-label="Last name" class="form-control"  placeholder="How to Entanglement Swapping？">
+				</div>
+			</div>
+			<div style="height:20px;">
+			
+			</div>
+			
+			
+			<div class="row mt-2 action-row" style="text-align:left; margin: auto;">
+				<div class="action-buttons">
+					<button class="btn btn-primary" onclick="run()">Run</button>
+					<button class="btn btn-danger" onclick="reset()">Clear</button>
+				</div>
+				
+				<div>
+	
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" >
+						<label class="form-check-label" for="flexRadioDefault2">
+							All Step
+						  </label>
+					</div>
+						
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" >
+						<label class="form-check-label" for="flexRadioDefault3">
+							Final Result
+						</label>
+					</div>
+						
+				</div>
+			</div>
+			
+			<div class="row alert alert-warning justify-content-center" "role="alert" style="margin-bottom: 0rem;margin-top:2em;">
+				Result
+			</div>
+			<center >
+				<div height="20%" style="margin:auto;">
+					<label id="Result" name="truthTable"  >
+						
+					</label>
+				</div>
+				
+			</center>
+		</div>
+	</body>
+	
+	<script>
+		function reset(){
+			document.getElementById("input_A").value="";
+			document.getElementById("input_B").value="";
+			document.getElementById("input_C").value="";
+			document.getElementById("Result").innerText="";
+		}
+		
+		function run(){
+			var a = document.getElementById("input_A").value;
+			var b = document.getElementById("input_B").value;
+			var es = document.getElementById("input_C").value;
+			var mode = document.getElementById("flexRadioDefault1");
+			var bb = document.getElementById("Result");
+			
+			bb.innerText = '';
+			
+			var first = get_bell_state(a);
+			var second = get_bell_state(b);
+			
+			if (!first || !second || !is_valid_order(es)){
+				bb.innerText = 'Invalid input';
+				return;
+			}
+			
+			bb.innerText+='$$\\begin{aligned}';
+			bb.innerText += '&\\ \\ \\ \\ A \\otimes B\\\\';
+			bb.innerText += '&= \\ '+ first.label + '\\otimes'+ second.label +'\\\\';
+			
+			if (mode.checked){
+				bb.innerText += '&=  \\frac{1}{\\sqrt{2}}('+format_computational_terms(first)+")_{12} \\otimes \\frac{1}{\\sqrt{2}}("+format_computational_terms(second)+')_{34} \\\\';
+			}
+			
+			var now_state = [];
+			var now_state_a = [];
+			
+			for (var i=0;i<first.bits.length;i++){
+				for (var j=0;j<second.bits.length;j++){
+					now_state.push(first.bits[i]+second.bits[j]);
+					now_state_a.push(first.signs[i]*second.signs[j]);
+				}
+			}
+			
+			if (mode.checked){
+				bb.innerText += '&=  \\frac{1}{2}(';
+				append_computational_list(bb, now_state, now_state_a);
+				bb.innerText += ")_{1234} \\\\";
+			}
+			
+			for (var i=0; i<now_state.length;i++){
+				var d = '';
+				for (var j=0;j < es.length;j++){
+					d += now_state[i][es[j]-1];
+				}
+				now_state[i] = d;
+			}
+			
+			if (mode.checked){
+				bb.innerText += '&=  \\frac{1}{2}(';
+				append_computational_list(bb, now_state, now_state_a);
+				bb.innerText += ")_{" + es +"}\\\\";
+			}
+			
+			var bell_result = build_bell_result(now_state, now_state_a);
+			
+			if (mode.checked){
+				bb.innerText += '&=  \\frac{1}{4} \\{';
+				for (var i=0; i<bell_result.pair_forms.length;i++){
+					append_signed_term(bb, bell_result.pair_forms[i], now_state_a[i], i==0, 1);
+					
+					if ((i + 1) % 2 == 0 && i != bell_result.pair_forms.length-1){
+						bb.innerText += '\\\\';
+						bb.innerText += '&\\quad \\quad \\quad ';
+					}
+				}
+				bb.innerText += "\\}_{" + es +"}\\\\" ;
+				
+				bb.innerText += '&=  \\frac{1}{4} \\{';
+				for (var i=0; i<bell_result.expanded_terms.length;i++){
+					append_signed_term(bb, bell_result.expanded_terms[i], bell_result.expanded_signs[i], i==0, 1);
+					
+					if ((i + 1) % 4 == 0 && i != bell_result.expanded_terms.length-1){
+						bb.innerText += '\\\\';
+						bb.innerText += '&\\quad \\quad \\quad ';
+					}
+				}
+				bb.innerText += "\\}_{" + es +"}\\\\" ;
+			}
+			
+			var denominator = 4 / bell_result.common;
+			bb.innerText += '&=  ' + format_fraction(denominator) + ' \\{';
+			
+			for (var i=0; i<bell_result.answer.length;i++){
+				append_signed_term(bb, bell_result.answer[i], bell_result.answer_a[i], i==0, Math.abs(bell_result.answer_a[i]));
+					
+				if ((i + 1) % 4 == 0 && i != bell_result.answer.length-1){
+					bb.innerText += '\\\\';
+					bb.innerText += '&\\quad \\quad \\quad ';
+				}
+			}
+			
+			bb.innerText += "\\}_{" + es +"}\\\\" ;
+			bb.innerText += ' \\end{aligned}$$';
+			
+			MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+		}
+		
+		function get_bell_state(code){
+			if (code == '00'){
+				return {label: '\\phi^+', bits: ['00', '11'], signs: [1, 1]};
+			}
+			else if (code == '01'){
+				return {label: '\\psi^+', bits: ['01', '10'], signs: [1, 1]};
+			}
+			else if (code == '10'){
+				return {label: '\\psi^-', bits: ['01', '10'], signs: [1, -1]};
+			}
+			else if (code == '11'){
+				return {label: '\\phi^-', bits: ['00', '11'], signs: [1, -1]};
+			}
+			
+			return null;
+		}
+		
+		function is_valid_order(order){
+			if (!/^[1-4]{4}$/.test(order)){
+				return false;
+			}
+			
+			for (var i=1;i<=4;i++){
+				if (order.indexOf(String(i)) == -1){
+					return false;
+				}
+			}
+			
+			return true;
+		}
+		
+		function format_computational_terms(state){
+			var text = '';
+			
+			for (var i=0;i<state.bits.length;i++){
+				if (state.signs[i] == -1){
+					text += '－';
+				}
+				else if (i != 0){
+					text += '＋';
+				}
+				
+				text += '|' + state.bits[i] + '〉';
+			}
+			
+			return text;
+		}
+		
+		function append_computational_list(target, states, signs){
+			for (var i=0;i<states.length;i++){
+				if (signs[i] == -1){
+					target.innerText += '－';
+				}
+				else if (i != 0){
+					target.innerText += '＋';
+				}
+				
+				target.innerText += '|' + states[i] + '〉';
+			}
+		}
+		
+		function get_bell_expansion(bits){
+			if (bits == '00'){
+				return {states: ['\\phi^+', '\\phi^-'], signs: [1, 1]};
+			}
+			else if (bits == '11'){
+				return {states: ['\\phi^+', '\\phi^-'], signs: [1, -1]};
+			}
+			else if (bits == '01'){
+				return {states: ['\\psi^+', '\\psi^-'], signs: [1, 1]};
+			}
+			else if (bits == '10'){
+				return {states: ['\\psi^+', '\\psi^-'], signs: [1, -1]};
+			}
+			
+			return {states: [], signs: []};
+		}
+		
+		function format_bell_expansion(expansion){
+			if (expansion.states.length == 0){
+				return '';
+			}
+			
+			var text = '(' + expansion.states[0];
+			
+			for (var i=1;i<expansion.states.length;i++){
+				text += expansion.signs[i] == -1 ? '－' : '＋';
+				text += expansion.states[i];
+			}
+			
+			text += ')';
+			return text;
+		}
+		
+		function multiply_bell_expansions(pair_expansions, state_sign){
+			var products = [{term: '', sign: state_sign}];
+			
+			for (var i=0;i<pair_expansions.length;i++){
+				var next = [];
+				
+				for (var j=0;j<products.length;j++){
+					for (var k=0;k<pair_expansions[i].states.length;k++){
+						var term = products[j].term;
+						
+						if (term != ''){
+							term += '\\otimes';
+						}
+						
+						term += pair_expansions[i].states[k];
+						
+						next.push({
+							term: term,
+							sign: products[j].sign * pair_expansions[i].signs[k]
+						});
+					}
+				}
+				
+				products = next;
+			}
+			
+			return products;
+		}
+		
+		function build_bell_result(states, state_signs){
+			var pair_forms = [];
+			var expanded_terms = [];
+			var expanded_signs = [];
+			
+			for (var i=0;i<states.length;i++){
+				var pair_expansions = [];
+				var pair_form = '';
+				
+				for (var j=0;j<states[i].length;j+=2){
+					var expansion = get_bell_expansion(states[i].substring(j,j+2));
+					pair_expansions.push(expansion);
+					pair_form += format_bell_expansion(expansion);
+					
+					if (j + 2 != states[i].length){
+						pair_form += '\\otimes';
+					}
+				}
+				
+				pair_forms.push(pair_form);
+				
+				var products = multiply_bell_expansions(pair_expansions, state_signs[i]);
+				for (var k=0;k<products.length;k++){
+					expanded_terms.push(products[k].term);
+					expanded_signs.push(products[k].sign);
+				}
+			}
+			
+			var combined = combine_terms(expanded_terms, expanded_signs);
+			
+			return {
+				pair_forms: pair_forms,
+				expanded_terms: expanded_terms,
+				expanded_signs: expanded_signs,
+				answer: combined.answer,
+				answer_a: combined.answer_a,
+				common: combined.common
+			};
+		}
+		
+		function combine_terms(terms, signs){
+			var indexes = [];
+			var values = [];
+			
+			for (var i=0;i<terms.length;i++){
+				var index = indexes.indexOf(terms[i]);
+				
+				if (index == -1){
+					indexes.push(terms[i]);
+					values.push(signs[i]);
+				}
+				else{
+					values[index] += signs[i];
+				}
+			}
+			
+			var answer = [];
+			var answer_a = [];
+			var common = 0;
+			
+			for (var j=0;j<indexes.length;j++){
+				if (values[j] != 0){
+					answer.push(indexes[j]);
+					answer_a.push(values[j]);
+					common = gcd(common, Math.abs(values[j]));
+				}
+			}
+			
+			if (common == 0){
+				common = 1;
+			}
+			
+			for (var k=0;k<answer_a.length;k++){
+				answer_a[k] = answer_a[k] / common;
+			}
+			
+			return {answer: answer, answer_a: answer_a, common: common};
+		}
+		
+		function gcd(a, b){
+			a = Math.abs(a);
+			b = Math.abs(b);
+			
+			while (b != 0){
+				var temp = b;
+				b = a % b;
+				a = temp;
+			}
+			
+			return a;
+		}
+		
+		function format_fraction(denominator){
+			if (denominator == 1){
+				return '';
+			}
+			
+			return '\\frac{1}{' + denominator + '}';
+		}
+		
+		function append_signed_term(target, term, sign, is_first, magnitude){
+			if (sign < 0){
+				target.innerText += '－';
+			}
+			else if (!is_first){
+				target.innerText += '＋';
+			}
+			
+			if (magnitude > 1){
+				target.innerText += magnitude;
+			}
+			
+			target.innerText += term;
+		}
+	</script>
+	
+</html>

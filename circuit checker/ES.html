@@ -9,15 +9,32 @@
 		<script src="js/drag-test.js" defer></script>
 		<!-- <script src="/js/index.js"></script> -->
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<style>
+			.top-nav{
+				display:flex;
+				flex-wrap:wrap;
+				gap:6px;
+				align-items:center;
+				padding-bottom:4px;
+			}
+			.top-nav .btn{
+				white-space:nowrap;
+				flex:0 0 auto;
+			}
+		</style>
 		
 	</head>
 	
 	<body>
 		<div class="container mt-3 " >
-			<button class="btn btn-success" style onclick="location.href='index.html'">Quantum Circuit</button>
-			<button class="btn btn-success" style onclick="location.href='3ES.html'">Three Entanglement Swapping</button>
-			<button class="btn btn-success" style onclick="location.href='3ES3.html'">Three GHZ Entanglement Swapping</button>
-			<button class="btn btn-success" style onclick="location.href='../hypercube tool/index.html'">Hypercube Tool</button>
+			<div class="top-nav">
+				<button class="btn btn-success btn-sm" style onclick="location.href='index.html'">Quantum Circuit</button>
+				<button class="btn btn-success btn-sm" style onclick="location.href='ES.html'">Entanglement Swapping</button>
+				<button class="btn btn-success btn-sm" style onclick="location.href='2ES.html'">Two Bell Entanglement Swapping</button>
+				<button class="btn btn-success btn-sm" style onclick="location.href='3BellES.html'">Three Bell Entanglement Swapping</button>
+				<button class="btn btn-success btn-sm" style onclick="location.href='3ES3.html'">Three GHZ Entanglement Swapping</button>
+				<button class="btn btn-success btn-sm" style onclick="location.href='../hypercube tool/index.html'">Hypercube Tool</button>
+			</div>
 			
 			<div class="row mt-2 ">
 				<table class="table text-center " role="alert" >
